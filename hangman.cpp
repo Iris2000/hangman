@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <time.h>
 using namespace std;
 
 // function declaration
@@ -7,7 +9,9 @@ int menu();
 void startGame();
 void leaderboard();
 void quitGame();
+string loadRandomWord();
 
+// welcome screen
 void welcome() 
 {
     cout<<"\n\n";
@@ -32,6 +36,7 @@ void welcome()
     system("cls");
 }
 
+// game menu
 int menu()
 {
     int choice;
@@ -48,6 +53,7 @@ int menu()
     cin.clear();
     cin.ignore();
 
+    // validate input
     while(choice>3||choice<1)
     {
         cout<<"\n\t\t\t\t\t\t\tInvalid Choice\n";
@@ -63,7 +69,56 @@ int menu()
 
 void startGame()
 {
-    cout << "Welcome to HANGMAN GUESSING GAME" << endl;
+    char playerName[50];
+    string wordToGuess;
+    cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
+    cout << "\n\t\t\t\t\t\t\t>> ";
+    cin.getline(playerName, 50);
+    cout << "\n\t\t\t\t\t\t\tGood luck, " << playerName << "!" << endl;
+
+    // get the random word
+    wordToGuess = loadRandomWord();
+}
+
+// load words into .txt file and choose random word
+string loadRandomWord()
+{
+    int count = 0;
+    string word;
+    string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
+                            "FINLAND", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
+                            "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
+                            "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
+                            "ZIMBABWE", "ARGENTINA", "BHUTAN", "CHAD", "DENMARK",
+                            "EGYPT", "FIJI", "GHANA", "KENYA", "LIBYA",
+                            "MONGOLIA", "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN",
+                            "URUGUAY", "VIETNAM", "ZAMBIA", "MAURITANIA", "LIBERIA"};
+
+    // load words into .txt file
+    ofstream countryWrite("countryName.txt");
+
+    for (int i = 0; i < 40; i++) 
+    {
+        countryWrite << countryName[i] << "\n";
+    }
+
+    countryWrite.close();
+
+    // generate random word from .txt file
+    ifstream countryRead("countryName.txt");
+
+    if (countryRead.is_open())
+    {
+        srand(time(0));
+        int random = rand() % 40;
+        while (getline(countryRead, word))
+        {
+            count++;
+
+            if (count == random)
+                return word;
+        } 
+    }  
 }
 
 void leaderboard()
