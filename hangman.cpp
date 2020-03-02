@@ -10,6 +10,8 @@ void startGame();
 void leaderboard();
 void quitGame();
 string loadRandomWord();
+void printMessage(string message);
+void drawHangman(int wrongCount);
 
 // welcome screen
 void welcome() 
@@ -71,13 +73,18 @@ void startGame()
 {
     char playerName[50];
     string wordToGuess;
+    int wrongCount = 0;
     cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
     cout << "\n\t\t\t\t\t\t\t>> ";
     cin.getline(playerName, 50);
-    cout << "\n\t\t\t\t\t\t\tGood luck, " << playerName << "!" << endl;
+    cout << "\n\t\t\t\t\t\t\tGood luck, " << playerName << "!\t\t\t\t\t" << endl;
+    system("pause");
+    system("cls");
 
     // get the random word
     wordToGuess = loadRandomWord();
+
+    drawHangman(wrongCount);
 }
 
 // load words into .txt file and choose random word
@@ -119,6 +126,66 @@ string loadRandomWord()
                 return word;
         } 
     }  
+}
+
+void drawHangman(int guessCount)
+{
+    if (guessCount >= 1)
+        printMessage("\t\t\t\t\t\t\t|");
+    else
+        printMessage("");
+ 
+    if (guessCount >= 2)
+        printMessage("\t\t\t\t\t\t\t|");
+    else
+        printMessage("");
+ 
+    if (guessCount >= 3)
+        printMessage("\t\t\t\t\t\t\tO");
+    else
+        printMessage("");
+ 
+    if (guessCount == 4)
+        printMessage("\t\t\t\t\t\t\t/  ");
+   
+    if (guessCount == 5)
+        printMessage("\t\t\t\t\t\t\t/| ");
+ 
+    if (guessCount >= 6)
+        printMessage("\t\t\t\t\t\t\t/|\\");
+    else
+        printMessage("");
+ 
+    if (guessCount >= 7)
+        printMessage("\t\t\t\t\t\t\t|");
+    else
+        printMessage("");
+ 
+    if (guessCount == 8)
+        printMessage("\t\t\t\t\t\t\t/");
+ 
+    if (guessCount >= 9)
+        printMessage("\t\t\t\t\t\t\t/ \\");
+    else
+        printMessage("");
+}
+
+void printMessage(string message)
+{
+    bool front = true;
+    for (int i = message.length(); i < 33; i++)
+    {
+        if (front)
+        {
+            message = " " + message;
+        }
+        else
+        {
+            message = message + " ";
+        }
+        front = !front;
+    }
+    cout << message << endl;
 }
 
 void leaderboard()
