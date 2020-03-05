@@ -76,7 +76,7 @@ void startGame()
 {
     char playerName[50];
     string wordToGuess;
-    char guesses[26] = {'A', 'C', 'F', 'V', 'Z'};
+    char guesses[26];
     int wrongCount = 7;
 
     cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
@@ -101,7 +101,7 @@ void startGame()
     printMessage("HANGMAN", true, true);
     drawHangman(wrongCount);
     printAvailableLetters(guesses);
-    
+    printMessage("GUESS A COUNTRY");
 }
 
 void printAvailableLetters(char guesses[])
