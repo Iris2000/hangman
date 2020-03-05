@@ -15,7 +15,8 @@ void printMessage(string message, bool printTop = true, bool printBottom = true)
 void drawHangman(int wrongCount);
 void printAvailableLetters(char guesses[]);
 void printLetters(char taken[], char alphabets[]);
-void checkWordAndResult(string wordToGuess, string guesses);
+bool printWordAndResult(string wordToGuess, char guesses[]);
+string checkWord(string wordToGuess, char guesses[], int count, string display);
 
 // welcome screen
 void welcome() 
@@ -76,9 +77,10 @@ int menu()
 void startGame()
 {
     char playerName[50];
-    string wordToGuess;
-    char guesses[26];
+    string wordToGuess = "HELLO";
+    char guesses[26] = "AHI";
     int wrongCount = 7;
+    bool win;
 
     cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
     cout << "\n\t\t\t\t\t\t\t>> ";
@@ -103,7 +105,7 @@ void startGame()
     drawHangman(wrongCount);
     printAvailableLetters(guesses);
     printMessage("GUESS A COUNTRY");
-    checkWordAndResult(wordToGuess, guesses);
+    win = printWordAndResult(wordToGuess, guesses);
 }
 
 void printAvailableLetters(char guesses[])
@@ -113,7 +115,6 @@ void printAvailableLetters(char guesses[])
     printMessage("AVAILABLE LETTERS");
     printLetters(guesses, alphabets1);
     printLetters(guesses, alphabets2);
-
 }
 
 // print letters for users to choose
@@ -141,9 +142,31 @@ void printLetters(char taken[], char alphabets[])
     printMessage(letters, false, false);
 }
 
-void checkWordAndResult(string wordToGuess, string guesses)
+bool printWordAndResult(string wordToGuess, char guesses[])
 {
+    bool won = true;
+    string displayWord;
 
+    displayWord = checkWord(wordToGuess, guesses, 0, "");
+    cout << displayWord << endl;
+}
+
+string checkWord(string wordToGuess, char guesses[], int i, string display)
+{
+    // if (guesses[].find(wordToGuess[i]))
+    // {
+    //     display += wordToGuess[i];
+    //     i++;
+    //     checkWord(wordToGuess, guesses, i, display);
+    // }
+    // else
+    // {
+    //     // won = false;
+    //     display += "_";
+    //     i++;
+    //     checkWord(wordToGuess, guesses, i , display);
+    // }
+    
 }
 
 // load words into .txt file and choose random word
