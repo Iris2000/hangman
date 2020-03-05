@@ -2,6 +2,7 @@
 #include <fstream>
 #include <time.h>
 #include <string.h>
+#include <stdlib.h>
 using namespace std;
 
 // function declaration
@@ -19,7 +20,7 @@ bool printWordAndResult(string wordToGuess, char guesses[]);
 string checkWord(string wordToGuess, char guesses[], int count, string display);
 
 // welcome screen
-void welcome() 
+void welcome()
 {
     cout<<"\n\n";
     cout<<"\t\t\t\t\t***************************************************************************************\n";
@@ -47,7 +48,7 @@ void welcome()
 int menu()
 {
     int choice;
-    cout<<"\n\n\t\t\t\t\t\t\t\t    HANGMAN GUESSING GAME MENU\n";	
+    cout<<"\n\n\t\t\t\t\t\t\t\t    HANGMAN GUESSING GAME MENU\n";
     cout<<"\n\n\t\t\t\t\t\t\t\tChoose from the following Options:\n\n";
     cout<<"\t\t\t\t\t\t\t _____________________________________________________ \n";
     cout<<"\t\t\t\t\t\t\t|                                        	      |\n";
@@ -93,7 +94,7 @@ void startGame()
         cout << "\n\t\t\t\t\t\t\t>> ";
         cin.getline(playerName, 50);
     }
-  
+
     cout << "\n\t\t\t\t\t\t\tGood luck, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
     system("pause");
     system("cls");
@@ -186,7 +187,7 @@ string loadRandomWord()
     // load words into .txt file
     ofstream countryWrite("countryName.txt");
 
-    for (int i = 0; i < 40; i++) 
+    for (int i = 0; i < 40; i++)
     {
         countryWrite << countryName[i] << "\n";
     }
@@ -206,30 +207,30 @@ string loadRandomWord()
 
             if (count == random)
                 return word;
-        } 
-    }  
+        }
+    }
 }
 
 void drawHangman(int guessCount)
 {
     if (guessCount >= 1)
         printMessage(" |", false, false);
- 
+
     if (guessCount >= 2)
         printMessage(" |", false, false);
- 
+
     if (guessCount >= 3)
         printMessage(" O", false, false);
- 
+
     if (guessCount >= 4)
         printMessage(" /|\\", false, false);
- 
+
     if (guessCount >= 5)
         printMessage(" |", false, false);
- 
+
     if (guessCount == 6)
         printMessage(" / ", false, false);
- 
+
     if (guessCount >= 7)
         printMessage(" / \\", false, false);
 }
@@ -266,7 +267,7 @@ void printMessage(string message, bool printTop, bool printBottom)
         cout << "*" << endl;
         cout << "\t\t\t\t\t\t\t\t+*********************************+" << endl;
     }
-    else 
+    else
     {
         cout << "*" << endl;
     }
@@ -284,7 +285,7 @@ void quitGame()
 
 int main()
 {
-   int choice; 
+   int choice;
 
    welcome();
    choice = menu();
