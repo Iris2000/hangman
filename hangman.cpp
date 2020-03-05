@@ -102,7 +102,7 @@ void startGame()
     printMessage("HANGMAN", true, true);
     drawHangman(wrongCount);
     printAvailableLetters(guesses);
-    
+
 }
 
 void printAvailableLetters(char guesses[])
@@ -123,7 +123,7 @@ void printLetters(char taken[], char alphabets[])
     string letters = " ";
     for (char i = 0; i < 13; i++)
     {
-        for (char j = 0; j < strlen(taken); j++) 
+        for (char j = 0; j < strlen(taken); j++)
         {
             if (alphabets[i] == taken[j])
             {
