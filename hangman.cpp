@@ -46,6 +46,7 @@ void welcome()
 int menu()
 {
     cout<<"HAHAHA\nYou got me\n";
+    cout<<"IM hahahah\n";
     int choice;
     cout<<"\n\n\t\t\t\t\t\t\t\t    HANGMAN GUESSING GAME MENU\n";
     cout<<"\n\n\t\t\t\t\t\t\t\tChoose from the following Options:\n\n";
