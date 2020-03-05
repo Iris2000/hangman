@@ -2,7 +2,6 @@
 #include <fstream>
 #include <time.h>
 #include <string.h>
-#include <stdlib.h>
 using namespace std;
 
 // function declaration
@@ -16,6 +15,7 @@ void printMessage(string message, bool printTop = true, bool printBottom = true)
 void drawHangman(int wrongCount);
 void printAvailableLetters(char guesses[]);
 void printLetters(char taken[], char alphabets[]);
+void checkWordAndResult(string wordToGuess, string guesses);
 
 // welcome screen
 void welcome()
@@ -103,6 +103,7 @@ void startGame()
     drawHangman(wrongCount);
     printAvailableLetters(guesses);
     printMessage("GUESS A COUNTRY");
+    checkWordAndResult(wordToGuess, guesses);
 }
 
 void printAvailableLetters(char guesses[])
@@ -138,6 +139,11 @@ void printLetters(char taken[], char alphabets[])
         found = false;
     }
     printMessage(letters, false, false);
+}
+
+void checkWordAndResult(string wordToGuess, string guesses)
+{
+
 }
 
 // load words into .txt file and choose random word
