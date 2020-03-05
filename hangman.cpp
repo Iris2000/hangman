@@ -3,6 +3,8 @@
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
+#include <cctype>
+
 using namespace std;
 
 // function declaration
@@ -14,10 +16,11 @@ void quitGame();
 string loadRandomWord();
 void printMessage(string message, bool printTop = true, bool printBottom = true);
 void drawHangman(int wrongCount);
-void printAvailableLetters(char guesses[]);
-void printLetters(char taken[], char alphabets[]);
-bool printWordAndResult(string wordToGuess, char guesses[]);
-string checkWord(string wordToGuess, char guesses[], int count, string display);
+void printAvailableLetters(string guesses);
+void printLetters(string taken, char alphabets[]);
+bool printWordAndResult(string wordToGuess, string guesses);
+string checkWord(string wordToGuess, string guesses, int count, string display);
+int triesLeft(string wordToGuess, string guesses);
 
 // welcome screen
 void welcome()
@@ -78,10 +81,12 @@ int menu()
 void startGame()
 {
     char playerName[50];
-    string wordToGuess = "HELLO";
-    char guesses[26] = "AHI";
-    int wrongCount = 7;
+    string wordToGuess;
+    string guesses;
+    int tries = 0;
     bool win;
+    char x;
+    bool found = false;
 
     cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
     cout << "\n\t\t\t\t\t\t\t>> ";
@@ -101,15 +106,108 @@ void startGame()
 
     // get the random word
     wordToGuess = loadRandomWord();
+    // wordToGuess = "MALAYSIA";
 
-    printMessage("HANGMAN", true, true);
-    drawHangman(wrongCount);
-    printAvailableLetters(guesses);
-    printMessage("GUESS A COUNTRY");
-    win = printWordAndResult(wordToGuess, guesses);
+    do
+    {
+        system("cls");
+        cout << "\t\t\t\t\t\t\t\t\t\t\t\t\tQuit Game: 1" << endl;
+        printMessage("HANGMAN", true, true);
+        drawHangman(tries);
+        printAvailableLetters(guesses);
+        printMessage("GUESS A COUNTRY");
+        win = printWordAndResult(wordToGuess, guesses);
+        // cout << "WIN: " << win << endl;
+        if (win)
+            break;
+        if (tries == 7)
+            break;
+
+        cout << "\t\t\t\t\t\t\t>>";
+        cin >> x;
+
+        do 
+        {
+            found = false;
+            if (x == '1')
+            {
+                char confirm;
+                cout << "\n\t\t\t\t\t\t\tAre you sure to quit game?[Y/N]\n" << endl;
+                cout << "\t\t\t\t\t\t\t>>";
+                cin >> confirm;
+                confirm = toupper(confirm);
+
+                while (confirm != 'Y' && confirm != 'N')
+                {
+                    cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
+                    cout << "\t\t\t\t\t\t\t>>";
+                    cin >> confirm;
+                }
+
+                if (confirm == 'Y')
+                {
+                    system("cls");
+                    menu();
+                }
+                else 
+                {
+                    cout << "\n\t\t\t\t\t\t\tGame continue...\n" << endl;
+                    cout << "\t\t\t\t\t\t\t>>";
+                    cin >> x;
+                }
+            }
+            else if (!isalpha(x))
+            {
+                found = true;
+                cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
+                cout << "\t\t\t\t\t\t\t>>";
+                cin >> x;
+                x = toupper(x);
+            }
+
+            for (int i = 0; i < guesses.length(); i++)
+            {
+                if (guesses[i] == x)
+                {
+                    found = true;
+                    cout << "\n\t\t\t\t\t\t\tThe letter is not available. Please choose again.\n" << endl;
+                    cout << "\t\t\t\t\t\t\t>>";
+                    cin >> x;
+                    x = toupper(x);
+                }
+            }
+        } while (found == true);
+    
+        guesses += x;
+
+        tries = triesLeft(wordToGuess, guesses);
+        // cout << "TRIES:" << tries << endl;
+
+    } while (tries <= 7);
+
+    if (win)
+        printMessage("YOU WON!", false, true);
+    else
+    {
+        printMessage("GAME OVER!", false, false);
+        printMessage("WORD: " + wordToGuess);
+    }
+    system("pause");
 }
 
-void printAvailableLetters(char guesses[])
+int triesLeft(string wordToGuess, string guesses)
+{
+    int error = 0;
+    for (int i = 0; i < guesses.length(); i++)
+    {
+        if (wordToGuess.find(guesses[i]) == string::npos)
+            error++;
+    }
+
+    return error;
+}
+
+void printAvailableLetters(string guesses)
 {
     char alphabets1[13] ={'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
     char alphabets2[13] ={'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
@@ -120,13 +218,13 @@ void printAvailableLetters(char guesses[])
 
 // print letters for users to choose
 // searching method: linear search
-void printLetters(char taken[], char alphabets[])
+void printLetters(string taken, char alphabets[])
 {
     bool found = false;
     string letters = " ";
     for (char i = 0; i < 13; i++)
     {
-        for (char j = 0; j < strlen(taken); j++)
+        for (char j = 0; j < taken.length(); j++)
         {
             if (alphabets[i] == taken[j])
             {
@@ -143,31 +241,58 @@ void printLetters(char taken[], char alphabets[])
     printMessage(letters, false, false);
 }
 
-bool printWordAndResult(string wordToGuess, char guesses[])
+bool printWordAndResult(string wordToGuess, string guesses)
 {
     bool won = true;
     string displayWord;
 
     displayWord = checkWord(wordToGuess, guesses, 0, "");
-    cout << displayWord << endl;
+
+    for (int i = 0; i < displayWord.length(); i ++)
+    {
+        if (displayWord[i] == '_')
+            won = false;
+    }
+    printMessage(displayWord, false);
+    return won;
 }
 
-string checkWord(string wordToGuess, char guesses[], int i, string display)
+string checkWord(string wordToGuess, string guesses, int count, string display)
 {
-    // if (guesses[].find(wordToGuess[i]))
-    // {
-    //     display += wordToGuess[i];
-    //     i++;
-    //     checkWord(wordToGuess, guesses, i, display);
-    // }
-    // else
-    // {
-    //     // won = false;
-    //     display += "_";
-    //     i++;
-    //     checkWord(wordToGuess, guesses, i , display);
-    // }
-    
+    // cout << "wordToGuess: " << wordToGuess << endl;
+    // cout << "length: " << wordToGuess.length() << endl;
+    // cout << "Guesses: " << guesses << endl;
+    // cout << "length: " << strlen(guesses) << endl;
+    // cout << "Count: " << count << endl;
+    // cout << "Display: " << display << endl;
+
+    bool found = false;
+
+    if (count == wordToGuess.length())
+    {
+        return display;
+    }
+
+    for (int j = 0; j < guesses.length(); j++)
+    {
+        // cout << "Guesses[j]: " << guesses[j] << endl;
+        // cout << "wordToGuess[count]: " << wordToGuess[count] << endl;
+        if (guesses[j] == wordToGuess[count])
+        {
+            found = true;
+            display += wordToGuess[count];
+            display += " ";
+            break;
+        }
+    }
+
+    if (found == false)
+    {
+        display += "_ ";
+    }
+
+    count++;
+    return checkWord(wordToGuess, guesses, count, display);
 }
 
 // load words into .txt file and choose random word
