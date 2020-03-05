@@ -13,6 +13,8 @@ void quitGame();
 string loadRandomWord();
 void printMessage(string message, bool printTop = true, bool printBottom = true);
 void drawHangman(int wrongCount);
+void printAvailableLetters(char guesses[]);
+void printLetters(char taken[], char alphabets[]);
 
 // welcome screen
 void welcome() 
@@ -74,6 +76,7 @@ void startGame()
 {
     char playerName[50];
     string wordToGuess;
+    char guesses[26] = {'A', 'C', 'F', 'V', 'Z'};
     int wrongCount = 7;
 
     cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
@@ -86,7 +89,6 @@ void startGame()
         cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
         cout << "\n\t\t\t\t\t\t\t>> ";
         cin.getline(playerName, 50);
-
     }
   
     cout << "\n\t\t\t\t\t\t\tGood luck, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
@@ -98,7 +100,43 @@ void startGame()
 
     printMessage("HANGMAN", true, true);
     drawHangman(wrongCount);
+    printAvailableLetters(guesses);
+    
+}
 
+void printAvailableLetters(char guesses[])
+{
+    char alphabets1[13] ={'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
+    char alphabets2[13] ={'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+    printMessage("AVAILABLE LETTERS");
+    printLetters(guesses, alphabets1);
+    printLetters(guesses, alphabets2);
+
+}
+
+// print letters for users to choose
+// searching method: linear search
+void printLetters(char taken[], char alphabets[])
+{
+    bool found = false;
+    string letters = " ";
+    for (char i = 0; i < 13; i++)
+    {
+        for (char j = 0; j < strlen(taken); j++) 
+        {
+            if (alphabets[i] == taken[j])
+            {
+                found = true;
+            }
+        }
+        if (!found)
+        {
+            letters += alphabets[i];
+            letters += " ";
+        }
+        found = false;
+    }
+    printMessage(letters, false, false);
 }
 
 // load words into .txt file and choose random word
