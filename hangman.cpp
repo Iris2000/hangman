@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
+#include <string.h>
 using namespace std;
 
 // function declaration
@@ -10,7 +11,7 @@ void startGame();
 void leaderboard();
 void quitGame();
 string loadRandomWord();
-void printMessage(string message);
+void printMessage(string message, bool printTop = true, bool printBottom = true);
 void drawHangman(int wrongCount);
 
 // welcome screen
@@ -73,18 +74,31 @@ void startGame()
 {
     char playerName[50];
     string wordToGuess;
-    int wrongCount = 0;
+    int wrongCount = 7;
+
     cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
     cout << "\n\t\t\t\t\t\t\t>> ";
     cin.getline(playerName, 50);
-    cout << "\n\t\t\t\t\t\t\tGood luck, " << playerName << "!\t\t\t\t\t" << endl;
+
+    while(strlen(playerName) == 0)
+    {
+        cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
+        cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
+        cout << "\n\t\t\t\t\t\t\t>> ";
+        cin.getline(playerName, 50);
+
+    }
+  
+    cout << "\n\t\t\t\t\t\t\tGood luck, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
     system("pause");
     system("cls");
 
     // get the random word
     wordToGuess = loadRandomWord();
 
+    printMessage("HANGMAN", true, true);
     drawHangman(wrongCount);
+
 }
 
 // load words into .txt file and choose random word
@@ -131,47 +145,39 @@ string loadRandomWord()
 void drawHangman(int guessCount)
 {
     if (guessCount >= 1)
-        printMessage("\t\t\t\t\t\t\t|");
-    else
-        printMessage("");
+        printMessage(" |", false, false);
  
     if (guessCount >= 2)
-        printMessage("\t\t\t\t\t\t\t|");
-    else
-        printMessage("");
+        printMessage(" |", false, false);
  
     if (guessCount >= 3)
-        printMessage("\t\t\t\t\t\t\tO");
-    else
-        printMessage("");
+        printMessage(" O", false, false);
  
-    if (guessCount == 4)
-        printMessage("\t\t\t\t\t\t\t/  ");
-   
-    if (guessCount == 5)
-        printMessage("\t\t\t\t\t\t\t/| ");
+    if (guessCount >= 4)
+        printMessage(" /|\\", false, false);
  
-    if (guessCount >= 6)
-        printMessage("\t\t\t\t\t\t\t/|\\");
-    else
-        printMessage("");
+    if (guessCount >= 5)
+        printMessage(" |", false, false);
+ 
+    if (guessCount == 6)
+        printMessage(" / ", false, false);
  
     if (guessCount >= 7)
-        printMessage("\t\t\t\t\t\t\t|");
-    else
-        printMessage("");
- 
-    if (guessCount == 8)
-        printMessage("\t\t\t\t\t\t\t/");
- 
-    if (guessCount >= 9)
-        printMessage("\t\t\t\t\t\t\t/ \\");
-    else
-        printMessage("");
+        printMessage(" / \\", false, false);
 }
 
-void printMessage(string message)
+void printMessage(string message, bool printTop, bool printBottom)
 {
+    if (printTop)
+    {
+        cout << "\t\t\t\t\t\t\t\t+*********************************+" << endl;
+        cout << "\t\t\t\t\t\t\t\t*";
+    }
+    else
+    {
+        cout << "\t\t\t\t\t\t\t\t*";
+    }
+
     bool front = true;
     for (int i = message.length(); i < 33; i++)
     {
@@ -185,7 +191,17 @@ void printMessage(string message)
         }
         front = !front;
     }
-    cout << message << endl;
+    cout << message;
+
+    if (printBottom)
+    {
+        cout << "*" << endl;
+        cout << "\t\t\t\t\t\t\t\t+*********************************+" << endl;
+    }
+    else 
+    {
+        cout << "*" << endl;
+    }
 }
 
 void leaderboard()
