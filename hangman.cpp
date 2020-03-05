@@ -2,6 +2,7 @@
 #include <fstream>
 #include <time.h>
 #include <string.h>
+#include <stdlib.h>
 using namespace std;
 
 // function declaration
@@ -44,6 +45,7 @@ void welcome()
 // game menu
 int menu()
 {
+    cout<<"HAHAHA\n";
     int choice;
     cout<<"\n\n\t\t\t\t\t\t\t\t    HANGMAN GUESSING GAME MENU\n";
     cout<<"\n\n\t\t\t\t\t\t\t\tChoose from the following Options:\n\n";
@@ -113,7 +115,6 @@ void printAvailableLetters(char guesses[])
     printLetters(guesses, alphabets2);
 
 }
-//Gonnie test
 // print letters for users to choose
 // searching method: linear search
 void printLetters(char taken[], char alphabets[])
