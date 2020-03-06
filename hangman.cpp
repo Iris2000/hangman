@@ -9,9 +9,9 @@ using namespace std;
 
 // function declaration
 void welcome();
-int menu();
+void menu();
 void enterName();
-void startGame();
+int startGame();
 void leaderboard();
 void quitGame();
 string loadRandomWord();
@@ -24,6 +24,8 @@ string checkWord(string wordToGuess, string guesses, int count, string display);
 int triesLeft(string wordToGuess, string guesses);
 char validateInput(char input);
 void changePlayer();
+void printLife();
+int score=0;
 
 // global variable
 char playerName[50];
@@ -54,7 +56,7 @@ void welcome()
 }
 
 // game menu
-int menu()
+void menu()
 {
     int choice;
     cout<<"\n\n\t\t\t\t\t\t\t\t    HANGMAN GUESSING GAME MENU\n";
@@ -80,7 +82,26 @@ int menu()
         cin.clear();
     }
 
-    return choice;
+    if(choice == 1)
+    {
+        if (strlen(playerName) != 0)
+        {
+            changePlayer();
+            // startGame();
+        }
+        else
+        {
+            enterName();
+        }
+    }
+    else if (choice == 2)
+    {
+        leaderboard();
+    }
+    else if (choice == 3)
+    {
+        quitGame();
+    }
 }
 
 // enter player name
@@ -144,25 +165,35 @@ char validateInput(char input)
     return input;
 }
 
+void printLife(int x){
+  while(x>0){
+    cout<<"* ";
+    x--;
+  };
+}
 // game start here
-void startGame()
+int startGame()
 {
     string guesses;
     string wordToGuess;
     int tries = 0;
-    bool win;
+    bool win = false;
     char x;
     bool found = false;
     int choice;
-
+    int life=7;
     // get the random word
     wordToGuess = loadRandomWord();
 
-    // repeat process to update interface 
+    // repeat process to update interface
      do
     {
         system("cls");
-        cout << "\t\t\t\t\t\t\t\t\t\t\t\t\tQuit Game: 1" << endl;
+        cout << "Quit Game: 1";
+        cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\tTotal score: "<<score<< endl;
+        cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tLife\t: ";
+        printLife(life);
+        cout<<endl;
         printMessage("HANGMAN", true, true);
         drawHangman(tries);
         printAvailableLetters(guesses);
@@ -181,47 +212,35 @@ void startGame()
         cin >> x;
         x = toupper(x);
 
+        if (x == '1')
+        {
+            // check if player really wants to quit the game
+            char confirm;
+            cout << "\n\t\t\t\t\t\t\tAre you sure to quit game?[Y/N]\n" << endl;
+            cout << "\t\t\t\t\t\t\t>>";
+            cin >> confirm;
+            confirm = validateInput(confirm);
+
+            if (confirm == 'Y')
+            {
+                system("cls");
+                menu();
+                return 0;
+            }
+            else
+            {
+                // continue the game
+                cout << "\n\t\t\t\t\t\t\tGame continue...\n" << endl;
+                cout << "\t\t\t\t\t\t\t>>";
+                cin >> x;
+            }
+        }
         // repeat if input is non-alphabet or letter is taken before
-        do 
+        do
         {
             found = false;
-            if (x == '1')
-            {
-                // check if player really wants to quit the game
-                char confirm;
-                cout << "\n\t\t\t\t\t\t\tAre you sure to quit game?[Y/N]\n" << endl;
-                cout << "\t\t\t\t\t\t\t>>";
-                cin >> confirm;
-                confirm = validateInput(confirm);
-
-                if (confirm == 'Y')
-                {
-                    system("cls");
-                    choice = menu();
-
-                    if(choice == 1)
-                    {
-                        changePlayer();
-                    }
-                    else if (choice == 2)
-                    {
-                        leaderboard();
-                    }
-                    else if (choice == 3)
-                    {
-                        quitGame();
-                    }
-                }
-                else 
-                {
-                    // continue the game
-                    cout << "\n\t\t\t\t\t\t\tGame continue...\n" << endl;
-                    cout << "\t\t\t\t\t\t\t>>";
-                    cin >> x;
-                }
-            }
-            // if player enter non-alphabet 
-            else if (!isalpha(x))
+            // if player enter non-alphabet
+            if (!isalpha(x) && x != '1')
             {
                 found = true;
                 cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
@@ -244,22 +263,24 @@ void startGame()
             }
 
         } while (found == true);
-    
+
         guesses += x;
 
         // check attempts available
         tries = triesLeft(wordToGuess, guesses);
-
+        life = 7-tries;
     } while (tries <= 7);
 
-    if (win)
-        printMessage("YOU WON!", false, true);
+    if (win){
+      printMessage("YOU WON!", false, true);
+      score=score+life;
+    }
     else
     {
         printMessage("GAME OVER!", false, false);
         printMessage("WORD: " + wordToGuess);
     }
-    
+
     // check if player wants to play again
     cout << "\n\t\t\t\t\t\t\tWould you like to play again?[Y/N]\n" << endl;
     cout << "\t\t\t\t\t\t\t>>";
@@ -271,23 +292,13 @@ void startGame()
     {
         system("cls");
         startGame();
+        return 0;
     }
     else if (playAgain == 'N')
     {
         system("cls");
-        choice = menu();
-        if(choice == 1)
-        {
-           changePlayer();
-        }
-        else if (choice == 2)
-        {
-            leaderboard();
-        }
-        else
-        {
-            quitGame();
-        }
+        menu();
+        return 0;
     }
 }
 
@@ -494,7 +505,38 @@ string checkWord(string wordToGuess, string guesses, int count, string display)
 // leaderboard
 void leaderboard()
 {
+    char confirm;
+    system("cls");
     cout << "\n\t\t\t\t\t\t\tThis is leaderboard" << endl;
+    cout << "\n\t\t\t\t\t\t\tBack to menu?[Y/N]\n" << endl;
+    cout << "\t\t\t\t\t\t\t>>";
+    cin >> confirm;
+    confirm = validateInput(confirm);
+
+    if (confirm == 'Y')
+    {
+        system("cls");
+        menu();
+    }
+    else
+    {
+        leaderboard();
+    }
+}
+
+//change name to ascii
+int name_to_ascii(char name[]){
+	int x = 0;
+	int ascii;
+	int sum=0;
+	while (name[x] != '\0')
+	{
+		ascii = int(name[x]);
+		sum=sum+ascii;
+		cout<<ascii<<endl;
+	    x++;
+	}
+	return sum;
 }
 
 // exit the program
@@ -505,30 +547,8 @@ void quitGame()
 
 int main()
 {
-   int choice;
-
    welcome();
-   choice = menu();
-
-   if(choice == 1)
-   {
-       if (strlen(playerName) != 0)
-       {
-           startGame();
-       }
-       else
-       {
-           enterName();
-       }
-   }
-   else if (choice == 2)
-   {
-       leaderboard();
-   }
-   else if (choice == 3)
-   {
-       quitGame();
-   }
+   menu();
 
    return 0;
 }
