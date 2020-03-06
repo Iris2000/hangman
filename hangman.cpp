@@ -10,6 +10,7 @@ using namespace std;
 // function declaration
 void welcome();
 int menu();
+void enterName();
 void startGame();
 void leaderboard();
 void quitGame();
@@ -22,10 +23,13 @@ bool printWordAndResult(string wordToGuess, string guesses);
 string checkWord(string wordToGuess, string guesses, int count, string display);
 int triesLeft(string wordToGuess, string guesses);
 
+// global variable
+char playerName[50];
+
 // welcome screen
 void welcome()
 {
-    cout<<"\n\n";
+    cout << "\n\n";
     cout<<"\t\t\t\t\t***************************************************************************************\n";
     cout<<"\t\t\t\t\t**                                           		                             **\n";
     cout<<"\t\t\t\t\t**                                            		                             **\n";
@@ -72,22 +76,15 @@ int menu()
         cout<<"\t\t\t\t\t\t\tEnter your choice: ";
         cin>>choice;
         cin.clear();
-        cin.ignore();
     }
 
     return choice;
 }
 
-void startGame()
+void enterName()
 {
-    char playerName[50];
-    string wordToGuess;
-    string guesses;
-    int tries = 0;
-    bool win;
-    char x;
-    bool found = false;
-
+    // cin.clear();
+    // cin.ignore();
     cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
     cout << "\n\t\t\t\t\t\t\t>> ";
     cin.getline(playerName, 50);
@@ -104,11 +101,24 @@ void startGame()
     system("pause");
     system("cls");
 
+    startGame();
+}
+
+void startGame()
+{
+    string guesses;
+    string wordToGuess;
+    int tries = 0;
+    bool win;
+    char x;
+    bool found = false;
+    int choice;
+
     // get the random word
     wordToGuess = loadRandomWord();
     // wordToGuess = "MALAYSIA";
 
-    do
+     do
     {
         system("cls");
         cout << "\t\t\t\t\t\t\t\t\t\t\t\t\tQuit Game: 1" << endl;
@@ -125,6 +135,7 @@ void startGame()
 
         cout << "\t\t\t\t\t\t\t>>";
         cin >> x;
+        x = toupper(x);
 
         do 
         {
@@ -147,7 +158,41 @@ void startGame()
                 if (confirm == 'Y')
                 {
                     system("cls");
-                    menu();
+                    choice = menu();
+
+                    if(choice == 1)
+                    {
+                        char changePlayer;
+                        cout << "\n\t\t\t\t\t\t\tWould you like to start with a new player name?[Y/N]\n" << endl;
+                        cout << "\t\t\t\t\t\t\t>>";
+                        cin >> changePlayer;
+                        cin.ignore();
+                        changePlayer = toupper(changePlayer);
+
+                        while (changePlayer != 'Y' && changePlayer != 'N')
+                        { 
+                            cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
+                            cout << "\t\t\t\t\t\t\t>>";
+                            cin >> changePlayer;
+                            changePlayer = toupper(changePlayer);
+                        }
+                        if (changePlayer == 'Y')
+                        {
+                            enterName();
+                        }
+                        else if (changePlayer == 'N')
+                        {
+                            startGame();
+                        }
+                    }
+                    else if (choice == 2)
+                    {
+                        leaderboard();
+                    }
+                    else if (choice == 3)
+                    {
+                        quitGame();
+                    }
                 }
                 else 
                 {
@@ -192,7 +237,63 @@ void startGame()
         printMessage("GAME OVER!", false, false);
         printMessage("WORD: " + wordToGuess);
     }
-    system("pause");
+    
+    cout << "\n\t\t\t\t\t\t\tWould you like to play again?[Y/N]\n" << endl;
+    cout << "\t\t\t\t\t\t\t>>";
+    char playAgain;
+    cin >> playAgain;
+    playAgain = toupper(playAgain);
+
+    while (playAgain != 'Y' && playAgain != 'N')
+    {
+        cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
+        cout << "\t\t\t\t\t\t\t>>";
+        cin >> playAgain;
+        playAgain = toupper(playAgain);
+    }
+
+    if (playAgain == 'Y')
+    {
+        system("cls");
+        startGame();
+    }
+    else if (playAgain == 'N')
+    {
+        system("cls");
+        choice = menu();
+        if(choice == 1)
+        {
+            char changePlayer;
+            cout << "\n\t\t\t\t\t\t\tWould you like to start with a new player name?[Y/N]\n" << endl;
+            cout << "\t\t\t\t\t\t\t>>";
+            cin >> changePlayer;
+            changePlayer = toupper(changePlayer);
+
+            while (changePlayer != 'Y' && changePlayer != 'N')
+            { 
+                cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
+                cout << "\t\t\t\t\t\t\t>>";
+                cin >> changePlayer;
+                changePlayer = toupper(changePlayer);
+            }
+            if (changePlayer == 'Y')
+            {
+                enterName();
+            }
+            else if (changePlayer == 'N')
+            {
+                startGame();
+            }
+        }
+        else if (choice == 2)
+        {
+            leaderboard();
+        }
+        else
+        {
+            quitGame();
+        }
+    }
 }
 
 int triesLeft(string wordToGuess, string guesses)
@@ -400,12 +501,12 @@ void printMessage(string message, bool printTop, bool printBottom)
 
 void leaderboard()
 {
-    cout << "This is leaderboard" << endl;
+    cout << "\n\t\t\t\t\t\t\tThis is leaderboard" << endl;
 }
 
 void quitGame()
 {
-    cout << "Thank you for your support." << endl;
+    cout << "\n\t\t\t\t\t\t\tThank you for your support." << endl;
 }
 
 int main()
@@ -417,13 +518,20 @@ int main()
 
    if(choice == 1)
    {
-       startGame();
+       if (strlen(playerName) != 0)
+       {
+           startGame();
+       }
+       else
+       {
+           enterName();
+       }
    }
    else if (choice == 2)
    {
        leaderboard();
    }
-   else
+   else if (choice == 3)
    {
        quitGame();
    }
