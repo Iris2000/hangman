@@ -84,7 +84,8 @@ void menu()
     {
         if (strlen(playerName) != 0)
         {
-            startGame();
+            changePlayer();
+            // startGame();
         }
         else
         {
@@ -168,7 +169,7 @@ int startGame()
     string guesses;
     string wordToGuess;
     int tries = 0;
-    bool win;
+    bool win = false;
     char x;
     bool found = false;
     int choice;
