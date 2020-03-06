@@ -25,11 +25,11 @@ int triesLeft(string wordToGuess, string guesses);
 char validateInput(char input);
 void changePlayer();
 void printLife();
-int score=0;
 
 // global variable
 char playerName[50];
-
+int score = 0;
+ 
 // welcome screen
 void welcome()
 {
@@ -181,7 +181,7 @@ int startGame()
     char x;
     bool found = false;
     int choice;
-    int life=7;
+    int life = 7;
     // get the random word
     wordToGuess = loadRandomWord();
 
@@ -266,7 +266,7 @@ int startGame()
 
         guesses += x;
 
-        // check attempts available
+        // check the number of failed attempts 
         tries = triesLeft(wordToGuess, guesses);
         life = 7-tries;
     } while (tries <= 7);
