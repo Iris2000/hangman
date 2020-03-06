@@ -176,7 +176,7 @@ int startGame()
     // get the random word
     wordToGuess = loadRandomWord();
 
-    // repeat process to update interface 
+    // repeat process to update interface
      do
     {
         system("cls");
@@ -250,7 +250,7 @@ int startGame()
             }
 
         } while (found == true);
-    
+
         guesses += x;
 
         // check attempts available
@@ -265,7 +265,7 @@ int startGame()
         printMessage("GAME OVER!", false, false);
         printMessage("WORD: " + wordToGuess);
     }
-    
+
     // check if player wants to play again
     cout << "\n\t\t\t\t\t\t\tWould you like to play again?[Y/N]\n" << endl;
     cout << "\t\t\t\t\t\t\t>>";
@@ -492,6 +492,21 @@ void leaderboard()
 {
     system("cls");
     cout << "\n\t\t\t\t\t\t\tThis is leaderboard" << endl;
+}
+
+//change name to ascii
+int name_to_ascii(char name[]){
+	int x = 0;
+	int ascii;
+	int sum=0;
+	while (name[x] != '\0')
+	{
+		ascii = int(name[x]);
+		sum=sum+ascii;
+		cout<<ascii<<endl;
+	    x++;
+	}
+	return sum;
 }
 
 // exit the program
