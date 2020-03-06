@@ -491,8 +491,23 @@ string checkWord(string wordToGuess, string guesses, int count, string display)
 // leaderboard
 void leaderboard()
 {
+    char confirm;
     system("cls");
     cout << "\n\t\t\t\t\t\t\tThis is leaderboard" << endl;
+    cout << "\n\t\t\t\t\t\t\tBack to menu?[Y/N]\n" << endl;
+    cout << "\t\t\t\t\t\t\t>>";
+    cin >> confirm;
+    confirm = validateInput(confirm);
+
+    if (confirm == 'Y')
+    {
+        system("cls");
+        menu();
+    }
+    else
+    {
+        leaderboard();
+    }
 }
 
 //change name to ascii
