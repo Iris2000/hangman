@@ -495,7 +495,6 @@ string checkWord(string wordToGuess, string guesses, int count, string display)
 void leaderboard()
 {
     cout << "\n\t\t\t\t\t\t\tThis is leaderboard" << endl;
-
 }
 
 //change name to ascii
@@ -503,7 +502,7 @@ int name_to_ascii(char name[]){
 	int x = 0;
 	int ascii;
 	int sum=0;
-	while (name[x] != '\0')    // While the string isn't at the end...
+	while (name[x] != '\0')
 	{
 		ascii = int(name[x]);
 		sum=sum+ascii;
