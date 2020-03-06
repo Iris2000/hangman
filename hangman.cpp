@@ -22,6 +22,8 @@ void printLetters(string taken, char alphabets[]);
 bool printWordAndResult(string wordToGuess, string guesses);
 string checkWord(string wordToGuess, string guesses, int count, string display);
 int triesLeft(string wordToGuess, string guesses);
+char validateInput(char input);
+void changePlayer();
 
 // global variable
 char playerName[50];
@@ -81,14 +83,14 @@ int menu()
     return choice;
 }
 
+// enter player name
 void enterName()
 {
-    // cin.clear();
-    // cin.ignore();
     cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
     cout << "\n\t\t\t\t\t\t\t>> ";
     cin.getline(playerName, 50);
 
+    // validate player name
     while(strlen(playerName) == 0)
     {
         cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
@@ -104,6 +106,45 @@ void enterName()
     startGame();
 }
 
+// check if player wants to change player name
+void changePlayer()
+{
+    char changePlayer;
+    cout << "\n\t\t\t\t\t\t\tWould you like to start with a new player name?[Y/N]\n" << endl;
+    cout << "\t\t\t\t\t\t\t>>";
+    cin >> changePlayer;
+    cin.ignore();
+    changePlayer = validateInput(changePlayer);
+
+    if (changePlayer == 'Y')
+    {
+        enterName();
+    }
+    else if (changePlayer == 'N')
+    {
+        startGame();
+    }
+}
+
+// validate input [Y/N]
+char validateInput(char input)
+{
+    input = toupper(input);
+
+    while (input != 'Y' && input != 'N')
+    {
+        cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
+        cout << "\t\t\t\t\t\t\t>>";
+        cin >> input;
+        input = toupper(input);
+        cin.clear();
+        cin.ignore();
+    }
+
+    return input;
+}
+
+// game start here
 void startGame()
 {
     string guesses;
@@ -116,8 +157,8 @@ void startGame()
 
     // get the random word
     wordToGuess = loadRandomWord();
-    // wordToGuess = "MALAYSIA";
 
+    // repeat process to update interface 
      do
     {
         system("cls");
@@ -126,34 +167,32 @@ void startGame()
         drawHangman(tries);
         printAvailableLetters(guesses);
         printMessage("GUESS A COUNTRY");
+
+        // check status of game
         win = printWordAndResult(wordToGuess, guesses);
-        // cout << "WIN: " << win << endl;
+        // game completed if won or game over
         if (win)
             break;
         if (tries == 7)
             break;
 
+        // get the guessed letter from player
         cout << "\t\t\t\t\t\t\t>>";
         cin >> x;
         x = toupper(x);
 
+        // repeat if input is non-alphabet or letter is taken before
         do 
         {
             found = false;
             if (x == '1')
             {
+                // check if player really wants to quit the game
                 char confirm;
                 cout << "\n\t\t\t\t\t\t\tAre you sure to quit game?[Y/N]\n" << endl;
                 cout << "\t\t\t\t\t\t\t>>";
                 cin >> confirm;
-                confirm = toupper(confirm);
-
-                while (confirm != 'Y' && confirm != 'N')
-                {
-                    cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
-                    cout << "\t\t\t\t\t\t\t>>";
-                    cin >> confirm;
-                }
+                confirm = validateInput(confirm);
 
                 if (confirm == 'Y')
                 {
@@ -162,28 +201,7 @@ void startGame()
 
                     if(choice == 1)
                     {
-                        char changePlayer;
-                        cout << "\n\t\t\t\t\t\t\tWould you like to start with a new player name?[Y/N]\n" << endl;
-                        cout << "\t\t\t\t\t\t\t>>";
-                        cin >> changePlayer;
-                        cin.ignore();
-                        changePlayer = toupper(changePlayer);
-
-                        while (changePlayer != 'Y' && changePlayer != 'N')
-                        { 
-                            cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
-                            cout << "\t\t\t\t\t\t\t>>";
-                            cin >> changePlayer;
-                            changePlayer = toupper(changePlayer);
-                        }
-                        if (changePlayer == 'Y')
-                        {
-                            enterName();
-                        }
-                        else if (changePlayer == 'N')
-                        {
-                            startGame();
-                        }
+                        changePlayer();
                     }
                     else if (choice == 2)
                     {
@@ -196,11 +214,13 @@ void startGame()
                 }
                 else 
                 {
+                    // continue the game
                     cout << "\n\t\t\t\t\t\t\tGame continue...\n" << endl;
                     cout << "\t\t\t\t\t\t\t>>";
                     cin >> x;
                 }
             }
+            // if player enter non-alphabet 
             else if (!isalpha(x))
             {
                 found = true;
@@ -210,6 +230,7 @@ void startGame()
                 x = toupper(x);
             }
 
+            // check if letter is taken before
             for (int i = 0; i < guesses.length(); i++)
             {
                 if (guesses[i] == x)
@@ -221,12 +242,13 @@ void startGame()
                     x = toupper(x);
                 }
             }
+
         } while (found == true);
     
         guesses += x;
 
+        // check attempts available
         tries = triesLeft(wordToGuess, guesses);
-        // cout << "TRIES:" << tries << endl;
 
     } while (tries <= 7);
 
@@ -238,19 +260,12 @@ void startGame()
         printMessage("WORD: " + wordToGuess);
     }
     
+    // check if player wants to play again
     cout << "\n\t\t\t\t\t\t\tWould you like to play again?[Y/N]\n" << endl;
     cout << "\t\t\t\t\t\t\t>>";
     char playAgain;
     cin >> playAgain;
-    playAgain = toupper(playAgain);
-
-    while (playAgain != 'Y' && playAgain != 'N')
-    {
-        cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
-        cout << "\t\t\t\t\t\t\t>>";
-        cin >> playAgain;
-        playAgain = toupper(playAgain);
-    }
+    playAgain = validateInput(playAgain);
 
     if (playAgain == 'Y')
     {
@@ -263,27 +278,7 @@ void startGame()
         choice = menu();
         if(choice == 1)
         {
-            char changePlayer;
-            cout << "\n\t\t\t\t\t\t\tWould you like to start with a new player name?[Y/N]\n" << endl;
-            cout << "\t\t\t\t\t\t\t>>";
-            cin >> changePlayer;
-            changePlayer = toupper(changePlayer);
-
-            while (changePlayer != 'Y' && changePlayer != 'N')
-            { 
-                cout << "\n\t\t\t\t\t\t\tInvalid input. Please enter again.\n" << endl;
-                cout << "\t\t\t\t\t\t\t>>";
-                cin >> changePlayer;
-                changePlayer = toupper(changePlayer);
-            }
-            if (changePlayer == 'Y')
-            {
-                enterName();
-            }
-            else if (changePlayer == 'N')
-            {
-                startGame();
-            }
+           changePlayer();
         }
         else if (choice == 2)
         {
@@ -296,6 +291,112 @@ void startGame()
     }
 }
 
+// print message
+void printMessage(string message, bool printTop, bool printBottom)
+{
+    if (printTop)
+    {
+        cout << "\t\t\t\t\t\t\t\t+*********************************+" << endl;
+        cout << "\t\t\t\t\t\t\t\t*";
+    }
+    else
+    {
+        cout << "\t\t\t\t\t\t\t\t*";
+    }
+
+    bool front = true;
+    for (int i = message.length(); i < 33; i++)
+    {
+        if (front)
+        {
+            message = " " + message;
+        }
+        else
+        {
+            message = message + " ";
+        }
+        front = !front;
+    }
+    cout << message;
+
+    if (printBottom)
+    {
+        cout << "*" << endl;
+        cout << "\t\t\t\t\t\t\t\t+*********************************+" << endl;
+    }
+    else
+    {
+        cout << "*" << endl;
+    }
+}
+
+// load words into .txt file and choose random word
+string loadRandomWord()
+{
+    int count = 0;
+    string word;
+    string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
+                            "FINLAND", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
+                            "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
+                            "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
+                            "ZIMBABWE", "ARGENTINA", "BHUTAN", "CHAD", "DENMARK",
+                            "EGYPT", "FIJI", "GHANA", "KENYA", "LIBYA",
+                            "MONGOLIA", "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN",
+                            "URUGUAY", "VIETNAM", "ZAMBIA", "MAURITANIA", "LIBERIA"};
+
+    // load words into .txt file
+    ofstream countryWrite("countryName.txt");
+
+    for (int i = 0; i < 40; i++)
+    {
+        countryWrite << countryName[i] << "\n";
+    }
+
+    countryWrite.close();
+
+    // generate random word from .txt file
+    ifstream countryRead("countryName.txt");
+
+    if (countryRead.is_open())
+    {
+        srand(time(0));
+        int random = rand() % 40;
+        while (getline(countryRead, word))
+        {
+            count++;
+
+            if (count == random)
+                return word;
+        }
+    }
+}
+
+// draw stroke of hangman
+void drawHangman(int guessCount)
+{
+    if (guessCount >= 1)
+        printMessage(" |", false, false);
+
+    if (guessCount >= 2)
+        printMessage(" |", false, false);
+
+    if (guessCount >= 3)
+        printMessage(" O", false, false);
+
+    if (guessCount >= 4)
+        printMessage(" /|\\", false, false);
+
+    if (guessCount >= 5)
+        printMessage(" |", false, false);
+
+    if (guessCount == 6)
+        printMessage(" / ", false, false);
+
+    if (guessCount >= 7)
+        printMessage(" / \\", false, false);
+}
+
+// check available attemtps
 int triesLeft(string wordToGuess, string guesses)
 {
     int error = 0;
@@ -342,6 +443,7 @@ void printLetters(string taken, char alphabets[])
     printMessage(letters, false, false);
 }
 
+// update the blanks and return status of game
 bool printWordAndResult(string wordToGuess, string guesses)
 {
     bool won = true;
@@ -358,15 +460,10 @@ bool printWordAndResult(string wordToGuess, string guesses)
     return won;
 }
 
+// check if guessed letter match the word
+// method used: recursion
 string checkWord(string wordToGuess, string guesses, int count, string display)
 {
-    // cout << "wordToGuess: " << wordToGuess << endl;
-    // cout << "length: " << wordToGuess.length() << endl;
-    // cout << "Guesses: " << guesses << endl;
-    // cout << "length: " << strlen(guesses) << endl;
-    // cout << "Count: " << count << endl;
-    // cout << "Display: " << display << endl;
-
     bool found = false;
 
     if (count == wordToGuess.length())
@@ -376,8 +473,6 @@ string checkWord(string wordToGuess, string guesses, int count, string display)
 
     for (int j = 0; j < guesses.length(); j++)
     {
-        // cout << "Guesses[j]: " << guesses[j] << endl;
-        // cout << "wordToGuess[count]: " << wordToGuess[count] << endl;
         if (guesses[j] == wordToGuess[count])
         {
             found = true;
@@ -396,114 +491,13 @@ string checkWord(string wordToGuess, string guesses, int count, string display)
     return checkWord(wordToGuess, guesses, count, display);
 }
 
-// load words into .txt file and choose random word
-string loadRandomWord()
-{
-    int count = 0;
-    string word;
-    string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
-                            "FINLAND", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
-                            "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
-                            "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
-                            "ZIMBABWE", "ARGENTINA", "BHUTAN", "CHAD", "DENMARK",
-                            "EGYPT", "FIJI", "GHANA", "KENYA", "LIBYA",
-                            "MONGOLIA", "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN",
-                            "URUGUAY", "VIETNAM", "ZAMBIA", "MAURITANIA", "LIBERIA"};
-
-    // load words into .txt file
-    ofstream countryWrite("countryName.txt");
-
-    for (int i = 0; i < 40; i++)
-    {
-        countryWrite << countryName[i] << "\n";
-    }
-
-    countryWrite.close();
-
-    // generate random word from .txt file
-    ifstream countryRead("countryName.txt");
-
-    if (countryRead.is_open())
-    {
-        srand(time(0));
-        int random = rand() % 40;
-        while (getline(countryRead, word))
-        {
-            count++;
-
-            if (count == random)
-                return word;
-        }
-    }
-}
-
-void drawHangman(int guessCount)
-{
-    if (guessCount >= 1)
-        printMessage(" |", false, false);
-
-    if (guessCount >= 2)
-        printMessage(" |", false, false);
-
-    if (guessCount >= 3)
-        printMessage(" O", false, false);
-
-    if (guessCount >= 4)
-        printMessage(" /|\\", false, false);
-
-    if (guessCount >= 5)
-        printMessage(" |", false, false);
-
-    if (guessCount == 6)
-        printMessage(" / ", false, false);
-
-    if (guessCount >= 7)
-        printMessage(" / \\", false, false);
-}
-
-void printMessage(string message, bool printTop, bool printBottom)
-{
-    if (printTop)
-    {
-        cout << "\t\t\t\t\t\t\t\t+*********************************+" << endl;
-        cout << "\t\t\t\t\t\t\t\t*";
-    }
-    else
-    {
-        cout << "\t\t\t\t\t\t\t\t*";
-    }
-
-    bool front = true;
-    for (int i = message.length(); i < 33; i++)
-    {
-        if (front)
-        {
-            message = " " + message;
-        }
-        else
-        {
-            message = message + " ";
-        }
-        front = !front;
-    }
-    cout << message;
-
-    if (printBottom)
-    {
-        cout << "*" << endl;
-        cout << "\t\t\t\t\t\t\t\t+*********************************+" << endl;
-    }
-    else
-    {
-        cout << "*" << endl;
-    }
-}
-
+// leaderboard
 void leaderboard()
 {
     cout << "\n\t\t\t\t\t\t\tThis is leaderboard" << endl;
 }
 
+// exit the program
 void quitGame()
 {
     cout << "\n\t\t\t\t\t\t\tThank you for your support." << endl;
