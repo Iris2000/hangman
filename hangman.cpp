@@ -25,7 +25,7 @@ int triesLeft(string wordToGuess, string guesses);
 char validateInput(char input);
 void changePlayer();
 void printLife();
-int score=0, life=7;
+int score=0;
 
 // global variable
 char playerName[50];
@@ -181,7 +181,7 @@ int startGame()
     char x;
     bool found = false;
     int choice;
-
+    int life=7;
     // get the random word
     wordToGuess = loadRandomWord();
 
@@ -189,8 +189,9 @@ int startGame()
      do
     {
         system("cls");
-        cout << "\t\t\t\t\t\t\t\t\t\t\t\t\tQuit Game: 1" << endl;
-        cout << "\t\t\t\t\t\t\t\t\t\t\t\t\tLife\t: ";
+        cout << "Quit Game: 1";
+        cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\tTotal score: "<<score<< endl;
+        cout << "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tLife\t: ";
         printLife(life);
         cout<<endl;
         printMessage("HANGMAN", true, true);
@@ -226,7 +227,7 @@ int startGame()
                 menu();
                 return 0;
             }
-            else 
+            else
             {
                 // continue the game
                 cout << "\n\t\t\t\t\t\t\tGame continue...\n" << endl;
@@ -235,10 +236,10 @@ int startGame()
             }
         }
         // repeat if input is non-alphabet or letter is taken before
-        do 
+        do
         {
             found = false;
-            // if player enter non-alphabet 
+            // if player enter non-alphabet
             if (!isalpha(x) && x != '1')
             {
                 found = true;
@@ -270,8 +271,10 @@ int startGame()
         life = 7-tries;
     } while (tries <= 7);
 
-    if (win)
-        printMessage("YOU WON!", false, true);
+    if (win){
+      printMessage("YOU WON!", false, true);
+      score=score+life;
+    }
     else
     {
         printMessage("GAME OVER!", false, false);
