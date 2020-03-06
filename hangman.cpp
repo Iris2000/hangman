@@ -24,6 +24,8 @@ string checkWord(string wordToGuess, string guesses, int count, string display);
 int triesLeft(string wordToGuess, string guesses);
 char validateInput(char input);
 void changePlayer();
+void printLife();
+int score=0, life=7;
 
 // global variable
 char playerName[50];
@@ -144,6 +146,12 @@ char validateInput(char input)
     return input;
 }
 
+void printLife(int x){
+  while(x>0){
+    cout<<"* ";
+    x--;
+  };
+}
 // game start here
 void startGame()
 {
@@ -163,6 +171,9 @@ void startGame()
     {
         system("cls");
         cout << "\t\t\t\t\t\t\t\t\t\t\t\t\tQuit Game: 1" << endl;
+        cout << "\t\t\t\t\t\t\t\t\t\t\t\t\tLife\t: ";
+        printLife(life);
+        cout<<endl;
         printMessage("HANGMAN", true, true);
         drawHangman(tries);
         printAvailableLetters(guesses);
@@ -249,7 +260,7 @@ void startGame()
 
         // check attempts available
         tries = triesLeft(wordToGuess, guesses);
-
+        life = 7-tries;
     } while (tries <= 7);
 
     if (win)
