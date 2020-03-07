@@ -348,13 +348,14 @@ string loadRandomWord()
     int count = 0;
     string word;
     string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
-                            "FINLAND", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
+                            "CROATIA", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
                             "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
                             "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
-                            "ZIMBABWE", "ARGENTINA", "BHUTAN", "CHAD", "DENMARK",
-                            "EGYPT", "FIJI", "GHANA", "KENYA", "LIBYA",
+                            "ZIMBABWE", "ARGENTINA", "BHUTAN", "KIRIBATI", "BULGARIA",
+                            "EGYPT", "FIJI", "GHANA", "UZBEKISTAN", "LIBYA",
                             "MONGOLIA", "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN",
-                            "URUGUAY", "VIETNAM", "ZAMBIA", "MAURITANIA", "LIBERIA"};
+                            "URUGUAY", "AZERBAIJAN", "ZAMBIA", "MAURITANIA", "LIBERIA"};
+
 
     // load words into .txt file
     ofstream countryWrite("countryName.txt");
