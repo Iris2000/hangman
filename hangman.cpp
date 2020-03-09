@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cctype>
-#define tableSize 100
 
 using namespace std;
 
@@ -26,6 +25,7 @@ int triesLeft(string wordToGuess, string guesses);
 char validateInput(char input);
 void changePlayer();
 void printLife();
+<<<<<<< HEAD
 void PrintItem();
 
 ofstream os;
@@ -84,10 +84,12 @@ class hash{
 
 };
 
+=======
+int score=0;
+>>>>>>> parent of 0661161... with hash table without sorting
 
 // global variable
-string playerName="";
-int score=0;
+char playerName[50];
 
 // welcome screen
 void welcome()
@@ -143,7 +145,7 @@ void menu()
 
     if(choice == 1)
     {
-        /*if (strlen(playerName) != 0)
+        if (strlen(playerName) != 0)
         {
             changePlayer();
             // startGame();
@@ -151,8 +153,7 @@ void menu()
         else
         {
             enterName();
-        }*/
-        startGame();
+        }
     }
     else if (choice == 2)
     {
@@ -167,20 +168,20 @@ void menu()
 // enter player name
 void enterName()
 {
-	char choose;
-    cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
+    cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
     cout << "\n\t\t\t\t\t\t\t>> ";
-    cin>>playerName;
+    cin.getline(playerName, 50);
 
     // validate player name
-    while(playerName.length() == 0)
+    while(strlen(playerName) == 0)
     {
         cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
         cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
         cout << "\n\t\t\t\t\t\t\t>> ";
-        cin>>playerName;
+        cin.getline(playerName, 50);
     }
 
+<<<<<<< HEAD
     cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
 
     cout<<"Do you want to quit game? [Y/N]: ";
@@ -197,10 +198,17 @@ void enterName()
 
 
 
+=======
+    cout << "\n\t\t\t\t\t\t\tGood luck, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
+    system("pause");
+    system("cls");
+
+    startGame();
+>>>>>>> parent of 0661161... with hash table without sorting
 }
 
 // check if player wants to change player name
-/*void changePlayer()
+void changePlayer()
 {
     char changePlayer;
     cout << "\n\t\t\t\t\t\t\tWould you like to start with a new player name?[Y/N]\n" << endl;
@@ -217,7 +225,7 @@ void enterName()
     {
         startGame();
     }
-}*/
+}
 
 // validate input [Y/N]
 char validateInput(char input)
@@ -369,10 +377,13 @@ int startGame()
     else if (playAgain == 'N')
     {
         system("cls");
-        enterName();
+        menu();
         return 0;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 0661161... with hash table without sorting
 }
 
 // print message
@@ -419,6 +430,7 @@ string loadRandomWord()
 {
     int count = 0;
     string word;
+<<<<<<< HEAD
     string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "DJIBOUTI", "ETHIOPIA","CROATIA",
                               "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN","ZAMBIA",
                               "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "ROMANIA","SLOVENIA",
@@ -427,6 +439,17 @@ string loadRandomWord()
                               "GHANA", "UZBEKISTAN", "LIBYA","AZERBAIJAN","EGYPT",
                               "LIBERIA", "GHANA", "MAURITANIA", "LIBYA","MONGOLIA",
                               "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN","URUGUAY"};
+=======
+    string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
+                            "CROATIA", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
+                            "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
+                            "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
+                            "ZIMBABWE", "ARGENTINA", "BHUTAN", "KIRIBATI", "BULGARIA",
+                            "EGYPT", "FIJI", "GHANA", "UZBEKISTAN", "LIBYA",
+                            "MONGOLIA", "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN",
+                            "URUGUAY", "AZERBAIJAN", "ZAMBIA", "MAURITANIA", "LIBERIA"};
+
+>>>>>>> parent of 0661161... with hash table without sorting
 
     // load words into .txt file
     ofstream countryWrite("countryName.txt");
@@ -581,7 +604,6 @@ void leaderboard()
     char confirm;
     system("cls");
     cout << "\n\t\t\t\t\t\t\tThis is leaderboard" << endl;
-    PrintTable();
     cout << "\n\t\t\t\t\t\t\tBack to menu?[Y/N]\n" << endl;
     cout << "\t\t\t\t\t\t\t>>";
     cin >> confirm;
@@ -594,55 +616,15 @@ void leaderboard()
     }
     else
     {
-    	PrintTable();
+        leaderboard();
     }
 }
 
-/*void hash::PrintTable(){ //for view the linked list which with element
-	int number;
-
-	ifstream print;
-	print.open("linkedList.txt");
-	string name;
-	int score;
-
-	cout<<"Name\t\t\t\tScore\n";
-
-	for(int i=0; i<tableSize; i++){
-		print>>HashTable[i]->name ;
-		print>>HashTable[i]->score;
-		if(HashTable[i]-> name != "empty"){
-			cout<<HashTable[i]->name<<"\t\t\t\t";
-			cout<<HashTable[i]->score<<"\n";
-		}
-	}
-
-}*/
-
-void PrintTable(){ //for view the linked list which with element
-	int number;
-
-	ifstream print;
-	print.open("linkedList.txt");
-	string textname;
-	int textscore;
-	leaderB temp;
-	int count =0;
-
-	cout<<"Name\t\t\t\tScore\n";
-<<<<<<< HEAD
-
-	while((print>>name>>score)&& count < tableSize){
-		if(name != "empty"){
-			cout<<name<<"\t\t\t\t";
-			cout<<score<<endl;
-=======
 
 	while((print>>textname>>textscore)&& count < tableSize){
 		if(textname != "empty"){
 			cout<<textname<<"\t\t\t\t";
 			cout<<textscore<<endl;
->>>>>>> 41b9843759d79622b3d982fd593c2085366069bb
 			++count;
 			//HashTable[i]->score = score[i];
 		}
@@ -670,8 +652,10 @@ int Hash(string key){
 
 }
 
+=======
+>>>>>>> parent of 0661161... with hash table without sorting
 //change name to ascii
-/*int name_to_ascii(char name[]){
+int name_to_ascii(char name[]){
 	int x = 0;
 	int ascii;
 	int sum=0;
@@ -684,7 +668,7 @@ int Hash(string key){
 	}
 	return sum;
 }
-*/
+
 // exit the program
 void quitGame()
 {
@@ -693,6 +677,7 @@ void quitGame()
 
 int main()
 {
+<<<<<<< HEAD
 	hash hashObj;
 	//int score;
 
@@ -701,5 +686,10 @@ int main()
 
    hashObj.AddItem(playerName, score);
 
+=======
+   welcome();
+   menu();
+
+>>>>>>> parent of 0661161... with hash table without sorting
    return 0;
 }
