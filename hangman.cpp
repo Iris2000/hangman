@@ -39,7 +39,7 @@ void SearchScore(string name);
 
 struct leaderB{
 			string name;
-			int score;
+			int scores;
 			leaderB* next;//pointer
 		};
 
@@ -53,7 +53,7 @@ class hash{
 			for(int i = 0; i<tableSize; i++){
 				HashTable[i] = new leaderB;
 				HashTable[i]-> name = "empty";
-				HashTable[i]-> score = 0;
+				HashTable[i]-> scores = 0;
 				HashTable[i]-> next = NULL;
 			}
 		}
@@ -65,14 +65,14 @@ class hash{
 
 	if(HashTable[index]->name == "empty"){
 		HashTable[index]->name = name;
-		HashTable[index]->score = score;
-		os<<HashTable[index]->name<<"\n"<<HashTable[index]->score<<"\n" ;  // write into text file
+		HashTable[index]->scores = score;
+		os<<HashTable[index]->name<<"\n"<<HashTable[index]->scores<<"\n" ;  // write into text file
 	}
 	else{
 		leaderB* Ptr = HashTable[index];
 		leaderB* n=new leaderB;
 		n->name = name;
-		n->score = score;
+		n->scores = score;
 		n->next = NULL;
 		//os<<n->name<<"\n"<<n->score<<"\n" ;
 		while(Ptr->next != NULL){
@@ -80,6 +80,7 @@ class hash{
 		}
 		Ptr->next = n;
 	}
+	os.close();
 }
 
 };
@@ -167,10 +168,11 @@ void menu()
 // enter player name
 void enterName()
 {
+	hash hashObj;
 	char choose;
-    cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
-    cout << "\n\t\t\t\t\t\t\t>> ";
-    cin>>playerName;
+			cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
+			cout << "\n\t\t\t\t\t\t\t>> ";
+			cin>>playerName;
 
     // validate player name
     while(playerName.length() == 0)
@@ -182,6 +184,7 @@ void enterName()
     }
 
     cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
+		hashObj.AddItem(playerName, score);
     system("pause");
     system("cls");
     menu();
@@ -259,7 +262,7 @@ int startGame()
         drawHangman(tries);
         printAvailableLetters(guesses);
         printMessage("GUESS A COUNTRY");
-
+				cout<<wordToGuess<<endl;
         // check status of game
         win = printWordAndResult(wordToGuess, guesses);
         // game completed if won or game over
@@ -285,6 +288,7 @@ int startGame()
             if (confirm == 'Y')
             {
                 system("cls");
+								enterName();
                 menu();
                 return 0;
             }
@@ -334,7 +338,7 @@ int startGame()
 
     if (win){
       printMessage("YOU WON!", false, true);
-      score=score+life;
+      score=score+life*10;
     }
     else
     {
@@ -408,14 +412,14 @@ string loadRandomWord()
 {
     int count = 0;
     string word;
-    string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
-                            "FINLAND", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
-                            "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
-                            "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
-                            "ZIMBABWE", "ARGENTINA", "BHUTAN", "CHAD", "DENMARK",
-                            "EGYPT", "FIJI", "GHANA", "KENYA", "LIBYA",
-                            "MONGOLIA", "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN",
-                            "URUGUAY", "VIETNAM", "ZAMBIA", "MAURITANIA", "LIBERIA"};
+		string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "DJIBOUTI", "ETHIOPIA","CROATIA",
+		                              "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN","ZAMBIA",
+		                              "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "ROMANIA","SLOVENIA",
+		                              "TANZANIA", "UKRAINE", "VENEZUELA","ZIMBABWE", "ARGENTINA",
+		                              "BHUTAN", "KIRIBATI", "BULGARIA","EGYPT", "FIJI",
+		                              "GHANA", "UZBEKISTAN", "LIBYA","AZERBAIJAN","EGYPT",
+		                              "LIBERIA", "GHANA", "MAURITANIA", "LIBYA","MONGOLIA",
+		                              "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN","URUGUAY"};
 
     // load words into .txt file
     ofstream countryWrite("countryName.txt");
@@ -583,6 +587,7 @@ void leaderboard()
     }
     else
     {
+			system("cls");
     	PrintTable();
     }
 }
@@ -674,13 +679,13 @@ void quitGame()
 
 int main()
 {
-	hash hashObj;
+	//hash hashObj;
 	int score;
 
    welcome();
    menu();
 
-   hashObj.AddItem(playerName, score);
+   //hashObj.AddItem(playerName, score);
 
    return 0;
 }
