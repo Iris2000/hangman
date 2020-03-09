@@ -419,6 +419,7 @@ string loadRandomWord()
 {
     int count = 0;
     string word;
+<<<<<<< HEAD
     string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "DJIBOUTI", "ETHIOPIA","CROATIA",
                               "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN","ZAMBIA",
                               "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "ROMANIA","SLOVENIA",
@@ -427,6 +428,16 @@ string loadRandomWord()
                               "GHANA", "UZBEKISTAN", "LIBYA","AZERBAIJAN","EGYPT",
                               "LIBERIA", "GHANA", "MAURITANIA", "LIBYA","MONGOLIA",
                               "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN","URUGUAY"};
+=======
+    string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
+                            "FINLAND", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
+                            "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
+                            "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
+                            "ZIMBABWE", "ARGENTINA", "BHUTAN", "CHAD", "DENMARK",
+                            "EGYPT", "FIJI", "GHANA", "KENYA", "LIBYA",
+                            "MONGOLIA", "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN",
+                            "URUGUAY", "VIETNAM", "ZAMBIA", "MAURITANIA", "LIBERIA"};
+>>>>>>> 41b9843759d79622b3d982fd593c2085366069bb
 
     // load words into .txt file
     ofstream countryWrite("countryName.txt");
@@ -624,17 +635,25 @@ void PrintTable(){ //for view the linked list which with element
 
 	ifstream print;
 	print.open("linkedList.txt");
-	string name;
-	int score;
+	string textname;
+	int textscore;
 	leaderB temp;
 	int count =0;
 
 	cout<<"Name\t\t\t\tScore\n";
+<<<<<<< HEAD
 
 	while((print>>name>>score)&& count < tableSize){
 		if(name != "empty"){
 			cout<<name<<"\t\t\t\t";
 			cout<<score<<endl;
+=======
+	
+	while((print>>textname>>textscore)&& count < tableSize){
+		if(textname != "empty"){
+			cout<<textname<<"\t\t\t\t";
+			cout<<textscore<<endl;
+>>>>>>> 41b9843759d79622b3d982fd593c2085366069bb
 			++count;
 			//HashTable[i]->score = score[i];
 		}
