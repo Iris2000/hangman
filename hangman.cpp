@@ -273,7 +273,7 @@ int startGame()
 
     if (win){
       printMessage("YOU WON!", false, true);
-      score=score+life;
+      score=score+life*10;
     }
     else
     {
