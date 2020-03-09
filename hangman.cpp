@@ -74,7 +74,6 @@ class hash{
 		n->name = name;
 		n->scores = score;
 		n->next = NULL;
-		//os<<n->name<<"\n"<<n->score<<"\n" ;
 		while(Ptr->next != NULL){
 			Ptr= Ptr->next;//to loop and found last pointer and add in to the index that have element
 		}
@@ -151,15 +150,6 @@ void menu()
 
     if(choice == 1)
     {
-        /*if (strlen(playerName) != 0)
-        {
-            changePlayer();
-            // startGame();
-        }
-        else
-        {
-            enterName();
-        }*/
 				score = 0;
         startGame();
     }
@@ -214,26 +204,6 @@ void enterName()
     menu();
 
 }
-
-// check if player wants to change player name
-/*void changePlayer()
-{
-    char changePlayer;
-    cout << "\n\t\t\t\t\t\t\tWould you like to start with a new player name?[Y/N]\n" << endl;
-    cout << "\t\t\t\t\t\t\t>>";
-    cin >> changePlayer;
-    cin.ignore();
-    changePlayer = validateInput(changePlayer);
-
-    if (changePlayer == 'Y')
-    {
-        enterName();
-    }
-    else if (changePlayer == 'N')
-    {
-        startGame();
-    }
-}*/
 
 // validate input [Y/N]
 char validateInput(char input)
@@ -616,28 +586,6 @@ void leaderboard()
     }
 }
 
-/*void hash::PrintTable(){ //for view the linked list which with element
-	int number;
-
-	ifstream print;
-	print.open("linkedList.txt");
-	string name;
-	int score;
-
-	cout<<"Name\t\t\t\tScore\n";
-
-	for(int i=0; i<tableSize; i++){
-		print>>HashTable[i]->name ;
-		print>>HashTable[i]->score;
-		if(HashTable[i]-> name != "empty"){
-			cout<<HashTable[i]->name<<"\t\t\t\t";
-			cout<<HashTable[i]->score<<"\n";
-		}
-	}
-
-}*/
-
-
 void decSortArray(){
 	for(int step = 1; step < 10; step++){
 		int sortScore = firstArr[step].unSortScore;
@@ -654,6 +602,7 @@ void decSortArray(){
 
 	}
 }
+
 void syncSortLeader(){
 	int number;
 
@@ -670,7 +619,6 @@ void syncSortLeader(){
 				firstArr[count].unSortScore=textscore;
 				count++;
 			}
-			//HashTable[i]->score = score[i];
 		}
 	}
 	decSortArray();
@@ -700,39 +648,20 @@ void PrintTable(){ //for view the linked list which with element
 	print.close();
 }
 
-
 int Hash(string key){
 
 	int hash=0;
 	int index;
 
-
 	for(int i = 0; i<key.length(); i++){ //.length() find the length of string in terms of byte
 		hash = hash + (int)key[i];
-		//cout<<key[i] ;
 	}
 
 	index = hash % tableSize; //the location of the value store
 
 	return index;
-
 }
 
-//change name to ascii
-/*int name_to_ascii(char name[]){
-	int x = 0;
-	int ascii;
-	int sum=0;
-	while (name[x] != '\0')
-	{
-		ascii = int(name[x]);
-		sum=sum+ascii;
-		cout<<ascii<<endl;
-	    x++;
-	}
-	return sum;
-}
-*/
 // exit the program
 void quitGame()
 {
@@ -741,13 +670,8 @@ void quitGame()
 
 int main()
 {
-	//hash hashObj;
-	int score;
-
    welcome();
    menu();
-
-   //hashObj.AddItem(playerName, score);
 
    return 0;
 }
