@@ -28,7 +28,7 @@ void changePlayer();
 void printLife();
 void PrintItem();
 
-ofstream os; 
+ofstream os;
 
 int Hash(string key);
 void AddItem(string name, int score);//to place the name and score in the hash table
@@ -41,13 +41,13 @@ struct leaderB{
 			string name;
 			int score;
 			leaderB* next;//pointer
-		};		
-		
-		
+		};
+
+
 class hash{
 	private:
 		leaderB* HashTable[tableSize], *head,*tail;//pointer
-		
+
 	public:
 		hash(){//a constructure that set default value
 			for(int i = 0; i<tableSize; i++){
@@ -55,14 +55,14 @@ class hash{
 				HashTable[i]-> name = "empty";
 				HashTable[i]-> score = 0;
 				HashTable[i]-> next = NULL;
-			}	
+			}
 		}
 	void AddItem(string name, int score){
-	
+
 	os.open("linkedList.txt",ofstream::app);
 	int index= Hash(name);
 	leaderB *temp = new leaderB;
-	
+
 	if(HashTable[index]->name == "empty"){
 		HashTable[index]->name = name;
 		HashTable[index]->score = score;
@@ -74,14 +74,14 @@ class hash{
 		n->name = name;
 		n->score = score;
 		n->next = NULL;
-		//os<<n->name<<"\n"<<n->score<<"\n" ; 
+		//os<<n->name<<"\n"<<n->score<<"\n" ;
 		while(Ptr->next != NULL){
-			Ptr= Ptr->next;//to loop and found last pointer and add in to the index that have element 
+			Ptr= Ptr->next;//to loop and found last pointer and add in to the index that have element
 		}
-		Ptr->next = n; 
+		Ptr->next = n;
 	}
-}	
-		
+}
+
 };
 
 
@@ -182,10 +182,10 @@ void enterName()
     }
 
     cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
-    
+
     cout<<"Do you want to quit game? [Y/N]: ";
     cin>>choose;
-    
+
     if(choose=='y'||choose=='Y'){
     	quitGame();
 	}
@@ -194,9 +194,9 @@ void enterName()
     	system("cls");
 		menu();
 	}
-	
-	
-	
+
+
+
 }
 
 // check if player wants to change player name
@@ -345,7 +345,7 @@ int startGame()
 
     if (win){
       printMessage("YOU WON!", false, true);
-      score=score+life;
+      score=score+life*10;
     }
     else
     {
@@ -372,7 +372,7 @@ int startGame()
         enterName();
         return 0;
     }
-    
+
 }
 
 // print message
@@ -419,13 +419,14 @@ string loadRandomWord()
 {
     int count = 0;
     string word;
-    string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
-                            "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
-                            "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
-                            "ZIMBABWE", "ARGENTINA", "BHUTAN", "CHAD", "DENMARK",
-                            "EGYPT", "FIJI", "GHANA", "KENYA", "LIBYA",
-                            "MONGOLIA", "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN",
-                            "URUGUAY", "VIETNAM", "ZAMBIA", "MAURITANIA", "LIBERIA"};
+    string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "DJIBOUTI", "ETHIOPIA","CROATIA",
+                              "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN","ZAMBIA",
+                              "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "ROMANIA","SLOVENIA",
+                              "TANZANIA", "UKRAINE", "VENEZUELA","ZIMBABWE", "ARGENTINA",
+                              "BHUTAN", "KIRIBATI", "BULGARIA","EGYPT", "FIJI",
+                              "GHANA", "UZBEKISTAN", "LIBYA","AZERBAIJAN","EGYPT",
+                              "LIBERIA", "GHANA", "MAURITANIA", "LIBYA","MONGOLIA",
+                              "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN","URUGUAY"};
 
     // load words into .txt file
     ofstream countryWrite("countryName.txt");
@@ -597,39 +598,39 @@ void leaderboard()
     }
 }
 
-/*void hash::PrintTable(){ //for view the linked list which with element 
+/*void hash::PrintTable(){ //for view the linked list which with element
 	int number;
-	
+
 	ifstream print;
 	print.open("linkedList.txt");
 	string name;
 	int score;
-	
+
 	cout<<"Name\t\t\t\tScore\n";
-	
+
 	for(int i=0; i<tableSize; i++){
-		print>>HashTable[i]->name ; 
+		print>>HashTable[i]->name ;
 		print>>HashTable[i]->score;
 		if(HashTable[i]-> name != "empty"){
 			cout<<HashTable[i]->name<<"\t\t\t\t";
 			cout<<HashTable[i]->score<<"\n";
 		}
 	}
-	
+
 }*/
 
-void PrintTable(){ //for view the linked list which with element 
+void PrintTable(){ //for view the linked list which with element
 	int number;
-	
+
 	ifstream print;
 	print.open("linkedList.txt");
 	string name;
 	int score;
 	leaderB temp;
 	int count =0;
-	
+
 	cout<<"Name\t\t\t\tScore\n";
-	
+
 	while((print>>name>>score)&& count < tableSize){
 		if(name != "empty"){
 			cout<<name<<"\t\t\t\t";
@@ -638,27 +639,27 @@ void PrintTable(){ //for view the linked list which with element
 			//HashTable[i]->score = score[i];
 		}
 	}
-	
+
 	cout<<"\n\t\t\t\tYour Name: "<<playerName<<endl;
 	cout<<"\t\t\t\tYour Score: "<<score<<endl;
 }
 
 
 int Hash(string key){
-	
+
 	int hash=0;
 	int index;
-	 
-	
+
+
 	for(int i = 0; i<key.length(); i++){ //.length() find the length of string in terms of byte
 		hash = hash + (int)key[i];
 		//cout<<key[i] ;
 	}
-	
+
 	index = hash % tableSize; //the location of the value store
-	
+
 	return index;
-	
+
 }
 
 //change name to ascii
@@ -685,12 +686,12 @@ void quitGame()
 int main()
 {
 	hash hashObj;
-	int score;
-	
+	//int score;
+
    welcome();
    menu();
-   
+
    hashObj.AddItem(playerName, score);
-   
+
    return 0;
 }
