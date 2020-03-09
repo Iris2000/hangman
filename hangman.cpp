@@ -27,7 +27,7 @@ char validateInput(char input);
 void changePlayer();
 void printLife();
 void PrintItem();
-
+void syncSortLeader();
 ofstream os;
 
 int Hash(string key);
@@ -89,6 +89,13 @@ class hash{
 // global variable
 string playerName="";
 int score=0;
+struct unSortArray
+{
+	string unSortPlyName;
+	int unSortScore;
+};
+unSortArray firstArr[10];
+ifstream print;
 
 // welcome screen
 void welcome()
@@ -153,6 +160,7 @@ void menu()
         {
             enterName();
         }*/
+				score = 0;
         startGame();
     }
     else if (choice == 2)
@@ -170,22 +178,38 @@ void enterName()
 {
 	hash hashObj;
 	char choose;
-			cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
+	ofstream print;
+	print.open("linkedList.txt");
+	syncSortLeader();
+
+	if(score>firstArr[9].unSortScore){
+		cout<< "\n\t\t\t\t\t\t\tCongratulation you hit the leader board!"<<endl<<endl;
+		cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
+		cout << "\n\t\t\t\t\t\t\t>> ";
+		cin>>playerName;
+
+	// validate player name
+	while(playerName.length() == 0)
+	{
+			cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
+			cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
 			cout << "\n\t\t\t\t\t\t\t>> ";
 			cin>>playerName;
+	}
 
-    // validate player name
-    while(playerName.length() == 0)
-    {
-        cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
-        cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
-        cout << "\n\t\t\t\t\t\t\t>> ";
-        cin>>playerName;
-    }
-
-    cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
-		hashObj.AddItem(playerName, score);
-    system("pause");
+	cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
+	for(int w=0;w<9;w++){
+		print<<firstArr[w].unSortPlyName<<"\n"<<firstArr[w].unSortScore<<"\n";
+	}
+	print.close();
+	hashObj.AddItem(playerName, score);
+	}
+	else
+	{
+		cout<<"Score: "<<score<<endl;
+		cout<<"Kesiannya tak masuk leader board"<<endl;
+	}
+		system("pause");
     system("cls");
     menu();
 
@@ -573,10 +597,10 @@ void leaderboard()
 {
     char confirm;
     system("cls");
-    cout << "\n\t\t\t\t\t\t\tThis is leaderboard" << endl;
+    cout << "\nTOP 10 LEADERBOARD\n\n" <<endl;
     PrintTable();
-    cout << "\n\t\t\t\t\t\t\tBack to menu?[Y/N]\n" << endl;
-    cout << "\t\t\t\t\t\t\t>>";
+    cout << "\nBack to menu?[Y/N]\n" << endl;
+    cout << ">>";
     cin >> confirm;
     confirm = validateInput(confirm);
 
@@ -588,7 +612,7 @@ void leaderboard()
     else
     {
 			system("cls");
-    	PrintTable();
+    	leaderboard();
     }
 }
 
@@ -613,29 +637,67 @@ void leaderboard()
 
 }*/
 
-void PrintTable(){ //for view the linked list which with element
+
+void decSortArray(){
+	for(int step = 1; step < 10; step++){
+		int sortScore = firstArr[step].unSortScore;
+		string sortPlyName = firstArr[step].unSortPlyName;
+		int j =step - 1;
+		//For descending order, key > array
+		while(sortScore > firstArr[j].unSortScore && j >= 0){
+			firstArr[j+1].unSortScore = firstArr[j].unSortScore;
+			firstArr[j+1].unSortPlyName = firstArr[j].unSortPlyName;
+			--j;
+		}
+		firstArr[j+1].unSortScore=sortScore;
+		firstArr[j+1].unSortPlyName=sortPlyName;
+
+	}
+}
+void syncSortLeader(){
 	int number;
 
-	ifstream print;
-	print.open("linkedList.txt");
 	string textname;
 	int textscore;
 	leaderB temp;
 	int count =0;
 
-	cout<<"Name\t\t\t\tScore\n";
-
 	while((print>>textname>>textscore)&& count < tableSize){
 		if(textname != "empty"){
-			cout<<textname<<"\t\t\t\t";
-			cout<<textscore<<endl;
-			++count;
+			if (count < 10)
+			{
+				firstArr[count].unSortPlyName=textname;
+				firstArr[count].unSortScore=textscore;
+				count++;
+			}
 			//HashTable[i]->score = score[i];
 		}
 	}
+	decSortArray();
+}
+void PrintTable(){ //for view the linked list which with element
+	int rank = 0;
+	print.open("linkedList.txt");
+	cout<<"Rank\tName\t\t\t\t\t\t\t\tScore\n";
+	syncSortLeader();
+	for(int v=0; v<10; v++){
+		if(firstArr[v].unSortScore > 0){
+			cout<<v+1<<"\t";
+			cout<<firstArr[v].unSortPlyName<<"\t\t\t\t\t\t\t\t";
+			cout<<firstArr[v].unSortScore<<endl;
+			if (firstArr[v].unSortPlyName == playerName)
+			{
+				rank = v+1;
+			}
+		}
+	}
 
-	cout<<"\n\t\t\t\tYour Name: "<<playerName<<endl;
-	cout<<"\t\t\t\tYour Score: "<<score<<endl;
+  if (rank != 0)
+		cout<<"\n\nYour Rank: "<<rank<<endl;
+	else
+		cout<<"\n\nYour Rank: --"<<endl;
+	cout<<"Your Score: "<<score<<endl;
+	print.close();
 }
 
 
