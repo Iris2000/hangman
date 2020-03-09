@@ -420,6 +420,7 @@ string loadRandomWord()
     int count = 0;
     string word;
     string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
+                            "FINLAND", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
                             "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
                             "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
                             "ZIMBABWE", "ARGENTINA", "BHUTAN", "CHAD", "DENMARK",
@@ -623,17 +624,17 @@ void PrintTable(){ //for view the linked list which with element
 	
 	ifstream print;
 	print.open("linkedList.txt");
-	string name;
-	int score;
+	string textname;
+	int textscore;
 	leaderB temp;
 	int count =0;
 	
 	cout<<"Name\t\t\t\tScore\n";
 	
-	while((print>>name>>score)&& count < tableSize){
-		if(name != "empty"){
-			cout<<name<<"\t\t\t\t";
-			cout<<score<<endl;
+	while((print>>textname>>textscore)&& count < tableSize){
+		if(textname != "empty"){
+			cout<<textname<<"\t\t\t\t";
+			cout<<textscore<<endl;
 			++count;
 			//HashTable[i]->score = score[i];
 		}
