@@ -182,20 +182,9 @@ void enterName()
     }
 
     cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
-    
-    cout<<"Do you want to quit game? [Y/N]: ";
-    cin>>choose;
-    
-    if(choose=='y'||choose=='Y'){
-    	quitGame();
-	}
-	else{
-		//system("pause");
-    	system("cls");
-		menu();
-	}
-	
-	
+    system("pause");
+    system("cls");
+    menu();
 	
 }
 
