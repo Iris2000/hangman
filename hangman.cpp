@@ -420,7 +420,6 @@ string loadRandomWord()
     int count = 0;
     string word;
     string countryName[40] = {"AFGHANISTAN", "BOLIVIA", "CZECH", "DJIBOUTI", "ETHIOPIA",
-                            "FINLAND", "GEORGIA", "HUNGARY", "JAMAICA", "KAZAKHSTAN",
                             "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "PHILIPPINES", "ROMANIA",
                             "SLOVENIA", "TANZANIA", "UKRAINE", "VENEZUELA", "YEMEN",
                             "ZIMBABWE", "ARGENTINA", "BHUTAN", "CHAD", "DENMARK",
