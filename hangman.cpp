@@ -25,10 +25,10 @@ int triesLeft(string wordToGuess, string guesses);
 char validateInput(char input);
 void changePlayer();
 void printLife();
+int score=0;
 
 // global variable
 char playerName[50];
-int score = 0;
 
 // welcome screen
 void welcome()
@@ -165,11 +165,10 @@ char validateInput(char input)
     return input;
 }
 
-//game life
-void printLife(int heart){
-  while(heart>0){
+void printLife(int x){
+  while(x>0){
     cout<<"* ";
-    heart--;
+    x--;
   };
 }
 // game start here
@@ -182,7 +181,7 @@ int startGame()
     char x;
     bool found = false;
     int choice;
-    int life = 7;
+    int life=7;
     // get the random word
     wordToGuess = loadRandomWord();
 
@@ -267,7 +266,7 @@ int startGame()
 
         guesses += x;
 
-        // check the number of failed attempts
+        // check attempts available
         tries = triesLeft(wordToGuess, guesses);
         life = 7-tries;
     } while (tries <= 7);
