@@ -95,7 +95,6 @@ struct unSortArray
 };
 unSortArray firstArr[10];
 ifstream print;
-
 // welcome screen
 void welcome()
 {
@@ -168,11 +167,11 @@ void enterName()
 {
 	hash hashObj;
 	char choose;
-	ofstream print;
-	print.open("linkedList.txt");
-	syncSortLeader();
+	ifstream readprint;
+	ofstream writeprint;
+	readprint.open("linkedList.txt");
+	if(readprint.fail()){
 
-	if(score>firstArr[9].unSortScore){
 		cout<< "\n\t\t\t\t\t\t\tCongratulation you hit the leader board!"<<endl<<endl;
 		cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
 		cout << "\n\t\t\t\t\t\t\t>> ";
@@ -189,16 +188,45 @@ void enterName()
 
 	cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
 	for(int w=0;w<9;w++){
-		print<<firstArr[w].unSortPlyName<<"\n"<<firstArr[w].unSortScore<<"\n";
+		writeprint<<firstArr[w].unSortPlyName<<"\n"<<firstArr[w].unSortScore<<"\n";
 	}
-	print.close();
+	writeprint.close();
+	readprint.close();
 	hashObj.AddItem(playerName, score);
 	}
-	else
-	{
-		cout<<"Score: "<<score<<endl;
-		cout<<"Kesiannya tak masuk leader board"<<endl;
+	else{
+		syncSortLeader();
+
+		if(score>firstArr[9].unSortScore){
+			cout<< "\n\t\t\t\t\t\t\tCongratulation you hit the leader board!"<<endl<<endl;
+			cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
+			cout << "\n\t\t\t\t\t\t\t>> ";
+			cin>>playerName;
+
+		// validate player name
+		while(playerName.length() == 0)
+		{
+				cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
+				cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
+				cout << "\n\t\t\t\t\t\t\t>> ";
+				cin>>playerName;
+		}
+
+		cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
+		for(int w=0;w<9;w++){
+			writeprint<<firstArr[w].unSortPlyName<<"\n"<<firstArr[w].unSortScore<<"\n";
+		}
+		writeprint.close();
+		readprint.close();
+		hashObj.AddItem(playerName, score);
+		}
+		else
+		{
+			cout<<"Score: "<<score<<endl;
+			cout<<"Kesiannya tak masuk leader board"<<endl;
+		}
 	}
+
 		system("pause");
     system("cls");
     menu();
@@ -256,7 +284,7 @@ int startGame()
         drawHangman(tries);
         printAvailableLetters(guesses);
         printMessage("GUESS A COUNTRY");
-				// cout<<wordToGuess<<endl;
+				cout<<wordToGuess<<endl;
         // check status of game
         win = printWordAndResult(wordToGuess, guesses);
         // game completed if won or game over
@@ -670,6 +698,8 @@ void quitGame()
 
 int main()
 {
+	 ifstream check;
+
    welcome();
    menu();
 
