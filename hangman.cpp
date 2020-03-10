@@ -162,6 +162,23 @@ void menu()
     }
 }
 
+void congratulation(){
+	cout<< "\n\t\t\t\t\t\t\tCongratulation you hit the leader board!"<<endl<<endl;
+	cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
+	cout << "\n\t\t\t\t\t\t\t>> ";
+	cin>>playerName;
+
+// validate player name
+while(playerName.length() == 0)
+	{
+			cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
+			cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
+			cout << "\n\t\t\t\t\t\t\t>> ";
+			cin>>playerName;
+	}
+
+	cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
+}
 // enter player name
 void enterName()
 {
@@ -171,48 +188,18 @@ void enterName()
 	ofstream writeprint;
 	readprint.open("linkedList.txt");
 	if(readprint.fail()){
-
-		cout<< "\n\t\t\t\t\t\t\tCongratulation you hit the leader board!"<<endl<<endl;
-		cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
-		cout << "\n\t\t\t\t\t\t\t>> ";
-		cin>>playerName;
-
-	// validate player name
-	while(playerName.length() == 0)
-	{
-			cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
-			cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
-			cout << "\n\t\t\t\t\t\t\t>> ";
-			cin>>playerName;
-	}
-
-	cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
-	for(int w=0;w<9;w++){
-		writeprint<<firstArr[w].unSortPlyName<<"\n"<<firstArr[w].unSortScore<<"\n";
-	}
-	writeprint.close();
-	readprint.close();
-	hashObj.AddItem(playerName, score);
+		cout<<"File CREATE"<<endl;
+		congratulation();
+		writeprint<<playerName<<"\n"<<score<<"\n";
+		hashObj.AddItem(playerName, score);
+		writeprint.close();
+		readprint.close();
 	}
 	else{
 		syncSortLeader();
-
+		cout<<"FILE ASIST"<<endl;
 		if(score>firstArr[9].unSortScore){
-			cout<< "\n\t\t\t\t\t\t\tCongratulation you hit the leader board!"<<endl<<endl;
-			cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to store in the game!" << endl;
-			cout << "\n\t\t\t\t\t\t\t>> ";
-			cin>>playerName;
-
-		// validate player name
-		while(playerName.length() == 0)
-		{
-				cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
-				cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
-				cout << "\n\t\t\t\t\t\t\t>> ";
-				cin>>playerName;
-		}
-
-		cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
+			congratulation();
 		for(int w=0;w<9;w++){
 			writeprint<<firstArr[w].unSortPlyName<<"\n"<<firstArr[w].unSortScore<<"\n";
 		}
