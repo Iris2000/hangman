@@ -184,12 +184,13 @@ void enterName()
 {
 	hash hashObj;
 	char choose;
+	int rec;
 	ifstream readprint;
 	ofstream writeprint;
 	readprint.open("linkedList.txt");
 	if(readprint.fail()){
-		cout<<"File CREATE"<<endl;
 		congratulation();
+		writeprint.open("linkedList.txt");
 		writeprint<<playerName<<"\n"<<score<<"\n";
 		hashObj.AddItem(playerName, score);
 		writeprint.close();
@@ -197,10 +198,21 @@ void enterName()
 	}
 	else{
 		syncSortLeader();
-		cout<<"FILE ASIST"<<endl;
-		if(score>firstArr[9].unSortScore){
+
+		for(int t=0; t<9; t++ ){
+			if(firstArr[t].unSortPlyName==""){
+				rec=t;
+				break;
+			}
+			else
+			 rec=9;
+		}
+		if(score>firstArr[rec].unSortScore){
 			congratulation();
-		for(int w=0;w<9;w++){
+			for(int testing=0; testing<rec; testing++ )
+			writeprint.open("linkedList.txt");
+		for(int w=0;w<rec;w++){
+			// writeprint.open("linkedList.txt",ofstream::app);
 			writeprint<<firstArr[w].unSortPlyName<<"\n"<<firstArr[w].unSortScore<<"\n";
 		}
 		writeprint.close();
@@ -271,7 +283,7 @@ int startGame()
         drawHangman(tries);
         printAvailableLetters(guesses);
         printMessage("GUESS A COUNTRY");
-				cout<<wordToGuess<<endl;
+				//cout<<wordToGuess<<endl;
         // check status of game
         win = printWordAndResult(wordToGuess, guesses);
         // game completed if won or game over
@@ -625,17 +637,19 @@ void syncSortLeader(){
 	int textscore;
 	leaderB temp;
 	int count =0;
-
-	while((print>>textname>>textscore)&& count < tableSize){
-		if(textname != "empty"){
+	ifstream readfile ;
+	readfile.open("linkedList.txt");
+	while((readfile>>textname>>textscore)&& count < tableSize){
+		//if(textname != "empty"){
 			if (count < 10)
 			{
 				firstArr[count].unSortPlyName=textname;
 				firstArr[count].unSortScore=textscore;
 				count++;
 			}
-		}
+		//}
 	}
+	readfile.close();
 	decSortArray();
 }
 void PrintTable(){ //for view the linked list which with element
