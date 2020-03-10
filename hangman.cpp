@@ -256,7 +256,7 @@ int startGame()
         drawHangman(tries);
         printAvailableLetters(guesses);
         printMessage("GUESS A COUNTRY");
-				cout<<wordToGuess<<endl;
+				// cout<<wordToGuess<<endl;
         // check status of game
         win = printWordAndResult(wordToGuess, guesses);
         // game completed if won or game over
