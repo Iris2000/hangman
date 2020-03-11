@@ -24,26 +24,37 @@ bool printWordAndResult(string wordToGuess, string guesses);
 string checkWord(string wordToGuess, string guesses, int count, string display);
 int triesLeft(string wordToGuess, string guesses);
 char validateInput(char input);
-void changePlayer();
 void printLife();
-void PrintItem();
 void syncSortLeader();
-ofstream os;
-
+void decSortArray();
+void congratulation();
 int Hash(string key);
-void AddItem(string name, int score);//to place the name and score in the hash table
-int NumberOfItemIndex(int index);//count the number of item in bucket
+void AddItem(string name, int score);
 void PrintTable();
-void PrintItemIndex(int index);
-void SearchScore(string name);
 
-struct leaderB{
-			string name;
-			int scores;
-			leaderB* next;//pointer
-		};
+// global variables
+ofstream os;
+string playerName="";
+int score=0;
 
+ifstream print;
 
+struct unSortArray
+{
+	string unSortPlyName;
+	int unSortScore;
+};
+unSortArray firstArr[10];
+
+struct leaderB
+{
+	string name;
+	int scores;
+	leaderB* next;
+};
+
+// hash playerName and score
+// method: Linked List
 class hash{
 	private:
 		leaderB* HashTable[tableSize], *head,*tail;//pointer
@@ -59,42 +70,31 @@ class hash{
 		}
 	void AddItem(string name, int score){
 
-	os.open("linkedList.txt",ofstream::app);
-	int index= Hash(name);
-	leaderB *temp = new leaderB;
-
-	if(HashTable[index]->name == "empty"){
-		HashTable[index]->name = name;
-		HashTable[index]->scores = score;
-		os<<HashTable[index]->name<<"\n"<<HashTable[index]->scores<<"\n" ;  // write into text file
-	}
-	else{
-		leaderB* Ptr = HashTable[index];
-		leaderB* n=new leaderB;
-		n->name = name;
-		n->scores = score;
-		n->next = NULL;
-		while(Ptr->next != NULL){
-			Ptr= Ptr->next;//to loop and found last pointer and add in to the index that have element
+		os.open("linkedList.txt",ofstream::app);
+		int index= Hash(name);
+		leaderB *temp = new leaderB;
+	
+		if(HashTable[index]->name == "empty"){
+			HashTable[index]->name = name;
+			HashTable[index]->scores = score;
+			os<<HashTable[index]->name<<"\n"<<HashTable[index]->scores<<"\n" ;  // write into text file
 		}
-		Ptr->next = n;
+		else{
+			leaderB* Ptr = HashTable[index];
+			leaderB* n=new leaderB;
+			n->name = name;
+			n->scores = score;
+			n->next = NULL;
+			while(Ptr->next != NULL){
+				Ptr= Ptr->next;//to loop and found last pointer and add in to the index that have element
+			}
+			Ptr->next = n;
+		}
+		os.close();
 	}
-	os.close();
-}
-
 };
 
 
-// global variable
-string playerName="";
-int score=0;
-struct unSortArray
-{
-	string unSortPlyName;
-	int unSortScore;
-};
-unSortArray firstArr[10];
-ifstream print;
 // welcome screen
 void welcome()
 {
@@ -149,7 +149,7 @@ void menu()
 
     if(choice == 1)
     {
-				score = 0;
+		score = 0;
         startGame();
     }
     else if (choice == 2)
@@ -168,13 +168,13 @@ void congratulation(){
 	cout << "\n\t\t\t\t\t\t\t>> ";
 	cin>>playerName;
 
-// validate player name
-while(playerName.length() == 0)
+	// validate player name
+	while(playerName.length() == 0)
 	{
-			cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
-			cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
-			cout << "\n\t\t\t\t\t\t\t>> ";
-			cin>>playerName;
+		cout << "\n\t\t\t\t\t\t\tSeem you haven't enter a name." << endl;
+		cout << "\n\t\t\t\t\t\t\tPlease enter a cool name to start the game!" << endl;
+		cout << "\n\t\t\t\t\t\t\t>> ";
+		cin>>playerName;
 	}
 
 	cout << "\n\t\t\t\t\t\t\tThank you for playing, " << playerName << "!\n\n\n\n\t\t\t\t\t\t";
@@ -188,6 +188,7 @@ void enterName()
 	ifstream readprint;
 	ofstream writeprint;
 	readprint.open("linkedList.txt");
+	
 	if(readprint.fail()){
 		congratulation();
 		writeprint.open("linkedList.txt");
@@ -209,15 +210,13 @@ void enterName()
 		}
 		if(score>firstArr[rec].unSortScore){
 			congratulation();
-			for(int testing=0; testing<rec; testing++ )
 			writeprint.open("linkedList.txt");
-		for(int w=0;w<rec;w++){
-			// writeprint.open("linkedList.txt",ofstream::app);
-			writeprint<<firstArr[w].unSortPlyName<<"\n"<<firstArr[w].unSortScore<<"\n";
-		}
-		writeprint.close();
-		readprint.close();
-		hashObj.AddItem(playerName, score);
+			for(int w=0;w<rec;w++){
+				writeprint<<firstArr[w].unSortPlyName<<"\n"<<firstArr[w].unSortScore<<"\n";
+			}
+			writeprint.close();
+			readprint.close();
+			hashObj.AddItem(playerName, score);
 		}
 		else
 		{
@@ -226,7 +225,7 @@ void enterName()
 		}
 	}
 
-		system("pause");
+	system("pause");
     system("cls");
     menu();
 
@@ -256,7 +255,9 @@ void printLife(int x){
     x--;
   };
 }
+
 // game start here
+// method: recursion
 int startGame()
 {
     string guesses;
@@ -309,8 +310,8 @@ int startGame()
             if (confirm == 'Y')
             {
                 system("cls");
-								enterName();
-                menu();
+				enterName();
+                //menu();
                 return 0;
             }
             else
@@ -377,6 +378,7 @@ int startGame()
     if (playAgain == 'Y')
     {
         system("cls");
+        // recursion
         startGame();
         return 0;
     }
@@ -438,8 +440,8 @@ string loadRandomWord()
 		                              "LUXEMBOURG", "MADAGASCAR", "NETHERLANDS", "ROMANIA","SLOVENIA",
 		                              "TANZANIA", "UKRAINE", "VENEZUELA","ZIMBABWE", "ARGENTINA",
 		                              "BHUTAN", "KIRIBATI", "BULGARIA","EGYPT", "FIJI",
-		                              "GHANA", "UZBEKISTAN", "LIBYA","AZERBAIJAN","EGYPT",
-		                              "LIBERIA", "GHANA", "MAURITANIA", "LIBYA","MONGOLIA",
+		                              "UZBEKISTAN", "LIBYA","AZERBAIJAN", "CAMEROON", "ANDORRA",
+		                              "LIBERIA", "GHANA", "MAURITANIA", "MONGOLIA", "DOMINICA",
 		                              "NIGERIA", "QATAR", "SOMALIA", "TURKMENISTAN","URUGUAY"};
 
     // load words into .txt file
@@ -613,6 +615,8 @@ void leaderboard()
     }
 }
 
+// sort scores with descending order
+// method: insertion sort
 void decSortArray(){
 	for(int step = 1; step < 10; step++){
 		int sortScore = firstArr[step].unSortScore;
@@ -640,14 +644,12 @@ void syncSortLeader(){
 	ifstream readfile ;
 	readfile.open("linkedList.txt");
 	while((readfile>>textname>>textscore)&& count < tableSize){
-		//if(textname != "empty"){
-			if (count < 10)
-			{
-				firstArr[count].unSortPlyName=textname;
-				firstArr[count].unSortScore=textscore;
-				count++;
-			}
-		//}
+		if (count < 10)
+		{
+			firstArr[count].unSortPlyName=textname;
+			firstArr[count].unSortScore=textscore;
+			count++;
+		}
 	}
 	readfile.close();
 	decSortArray();
@@ -669,10 +671,11 @@ void PrintTable(){ //for view the linked list which with element
 		}
 	}
 
-  if (rank != 0)
+    if (rank != 0)
 		cout<<"\n\nYour Rank: "<<rank<<endl;
 	else
 		cout<<"\n\nYour Rank: --"<<endl;
+		
 	cout<<"Your Score: "<<score<<endl;
 	print.close();
 }
@@ -699,8 +702,6 @@ void quitGame()
 
 int main()
 {
-	 ifstream check;
-
    welcome();
    menu();
 
